@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { Question, UserAnswer } from '../types';
+import type { Question, UserAnswer } from '../models';
 
 interface MapAnswerProps {
     question: Question;

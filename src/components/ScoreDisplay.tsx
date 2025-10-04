@@ -1,4 +1,4 @@
-import type { Question, UserAnswer } from '../types';
+import type { Question, UserAnswer } from '../models';
 import { calculateDistance, calculateScore, calculateTimeBonus } from '../utils/calculate';
 import { commonStyles, theme } from '../styles/theme';
 

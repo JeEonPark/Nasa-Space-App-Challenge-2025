@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { GameState, UserAnswer } from '../types';
+import type { GameState, UserAnswer } from '../models';
 import { getRandomQuestion } from '../data/questions';
 import { calculateDistance, calculateTotalScore } from '../utils/calculate';
 
