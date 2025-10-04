@@ -107,14 +107,19 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                 borderRadius: '4px',
                 overflow: 'hidden',
                 minHeight: '350px',
-                position: 'relative'
+                position: 'relative',
+                backgroundImage: 'url(/images/ui/map_background.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat'
             }}>
                 <div
                     ref={mapContainer}
                     style={{
                         height: '350px',
                         width: '100%',
-                        borderRadius: '4px'
+                        borderRadius: '4px',
+                        backgroundColor: 'rgba(0, 0, 0, 0.3)'
                     }}
                 />
 
