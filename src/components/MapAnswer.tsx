@@ -142,25 +142,6 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                             ホイール: ズーム<br />
                             右クリック+ドラッグ: 傾斜
                         </p>
-                        {selectedLat !== null && selectedLon !== null && (
-                            <div style={{
-                                marginTop: '10px',
-                                padding: '8px',
-                                background: 'rgba(42, 59, 90, 0.6)',
-                                borderRadius: '4px',
-                                border: '1px solid rgba(184, 197, 214, 0.2)'
-                            }}>
-                                <p style={{ margin: '0 0 5px 0', fontSize: '0.8em', fontWeight: 'bold' }}>
-                                    選択された座標
-                                </p>
-                                <p style={{ margin: '0', fontSize: '0.75em' }}>
-                                    緯度: {selectedLat.toFixed(4)}°
-                                </p>
-                                <p style={{ margin: '0', fontSize: '0.75em' }}>
-                                    経度: {selectedLon.toFixed(4)}°
-                                </p>
-                            </div>
-                        )}
                     </div>
                 </div>
 
