@@ -1,18 +1,15 @@
 import Welcome from './components/Welcome';
 import WindowSelector from './components/WindowSelector';
-import ZoomAnimation from './components/ZoomAnimation';
 import PhotoDisplay from './components/PhotoDisplay';
 import MapAnswer from './components/MapAnswer';
 import ScoreDisplay from './components/ScoreDisplay';
 import { useGameState } from './hooks/useGameState';
-import { theme } from './styles/theme';
 
 function App() {
   const {
     gameState,
     startWelcome,
     startGame,
-    completeZoom,
     showMap,
     submitAnswer,
     nextQuestion
@@ -61,9 +58,6 @@ function App() {
         <WindowSelector onWindowClick={startGame} />
       )}
 
-      {gameState.gameStage === 'zoomingToPhoto' && (
-        <ZoomAnimation onAnimationComplete={completeZoom} />
-      )}
 
       {gameState.gameStage === 'viewingPhoto' && gameState.currentQuestion && (
         <PhotoDisplay

@@ -28,16 +28,10 @@ export function useGameState() {
         setGameState({
             ...gameState,
             currentQuestion: randomQuestion,
-            gameStage: 'zoomingToPhoto'
-        });
-    };
-
-    const completeZoom = () => {
-        setGameState({
-            ...gameState,
             gameStage: 'viewingPhoto'
         });
     };
+
 
     const showMap = () => {
         setGameState({
@@ -79,13 +73,15 @@ export function useGameState() {
     };
 
     const nextQuestion = () => {
-        setGameStartTime(null);
+        const randomQuestion = getRandomQuestion();
+        const startTime = Date.now();
+        setGameStartTime(startTime);
         setGameState({
-            currentQuestion: null,
+            currentQuestion: randomQuestion,
             userAnswer: null,
             score: null,
             answerTime: null,
-            gameStage: 'waitingToStart'
+            gameStage: 'viewingPhoto'
         });
     };
 
@@ -93,7 +89,6 @@ export function useGameState() {
         gameState,
         startWelcome,
         startGame,
-        completeZoom,
         showMap,
         submitAnswer,
         nextQuestion
