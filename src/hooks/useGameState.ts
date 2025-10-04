@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { GameState, UserAnswer } from '../models';
-import { getRandomQuestion } from '../data/questions';
+import { getRandomQuestion } from '../data/QuestionUtil';
 import { calculateDistance, calculateTotalScore } from '../utils/calculate';
 
 export function useGameState() {
