@@ -53,7 +53,7 @@ export default function WindowSelector({ onWindowClick }: WindowSelectorProps) {
                 </h1>
             </div> */}
 
-            {/* アプリアイコンパーツ */}
+            {/* アプリアイコンパーツとPLAYボタン */}
             <div style={{
                 position: 'absolute',
                 top: '50%',
@@ -62,6 +62,7 @@ export default function WindowSelector({ onWindowClick }: WindowSelectorProps) {
                 zIndex: 2,
                 textAlign: 'center'
             }}>
+                {/* アプリアイコンパーツ */}
                 <img
                     src="/images/ui/app-icon-parts.png"
                     alt="CupolaQuest App Icon Parts"
@@ -69,33 +70,31 @@ export default function WindowSelector({ onWindowClick }: WindowSelectorProps) {
                         width: '300px',
                         height: '300px',
                         objectFit: 'contain',
-                        filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
+                        filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+                        display: 'block',
+                        margin: '0 auto'
                     }}
                 />
-            </div>
 
-            {/* PLAYボタン */}
-            <div
-                onClick={onWindowClick}
-                style={{
-                    position: 'absolute',
-                    top: '65%',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    zIndex: 3,
-                    cursor: 'pointer'
-                }}
-            >
-                <img
-                    src="/images/ui/guess-button.png"
-                    alt="Play Button"
+                {/* PLAYボタン */}
+                <div
+                    onClick={onWindowClick}
                     style={{
-                        width: '300px',
-                        height: '90px',
-                        objectFit: 'contain',
-                        filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
+                        marginTop: '20px',
+                        cursor: 'pointer'
                     }}
-                />
+                >
+                    <img
+                        src="/images/ui/guess-button.png"
+                        alt="Play Button"
+                        style={{
+                            width: '300px',
+                            height: '90px',
+                            objectFit: 'contain',
+                            filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
+                        }}
+                    />
+                </div>
             </div>
         </div>
     );
