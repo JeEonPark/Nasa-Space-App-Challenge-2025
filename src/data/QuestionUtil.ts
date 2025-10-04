@@ -43,11 +43,12 @@ function loadQuestions(): Question[] {
     for (const [imageId, entry] of Object.entries(data)) {
         // Use photo_center_point if available, otherwise spacecraft_nadir_point
         const coords = parseCoordinates(entry.photo_center_point) ||
-                      parseCoordinates(entry.spacecraft_nadir_point);
+            parseCoordinates(entry.spacecraft_nadir_point);
 
         if (coords) {
             questions.push({
                 id: id++,
+                file: `${imageId}.JPG`,
                 lat: coords.lat,
                 lon: coords.lon,
                 title: entry.name

@@ -22,31 +22,35 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
             <h2>ISS Photograph</h2>
             <div style={{
                 border: '1px solid rgba(184, 197, 214, 0.3)',
-                padding: '80px 40px',
+                padding: '20px',
                 background: 'rgba(10, 14, 39, 0.5)',
-                minHeight: '300px',
+                minHeight: '400px',
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: '4px'
             }}>
-                <div>
-                    <p style={{
-                        fontSize: '1.2em',
-                        margin: '20px 0',
-                        color: 'var(--star-white)'
-                    }}>
-                        {question.title}
-                    </p>
-                    <p style={{
-                        color: 'var(--star-silver)',
-                        fontSize: '0.85em',
-                        marginTop: '30px',
-                        opacity: 0.5
-                    }}>
-                        Image placeholder
-                    </p>
-                </div>
+                <img
+                    src={`/iss_photos/${question.file}`}
+                    alt={question.title}
+                    style={{
+                        maxWidth: '100%',
+                        maxHeight: '350px',
+                        objectFit: 'contain',
+                        borderRadius: '4px',
+                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+                    }}
+                />
+                <p style={{
+                    fontSize: '1.1em',
+                    margin: '15px 0 0 0',
+                    color: 'var(--star-white)',
+                    textAlign: 'center',
+                    fontWeight: '500'
+                }}>
+                    {question.title}
+                </p>
             </div>
 
             <button
