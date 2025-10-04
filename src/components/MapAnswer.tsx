@@ -7,11 +7,12 @@ interface MapAnswerProps {
 }
 
 export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) {
+    //　地図と同じ画面に、クイズの画像を表示するときにquestion.fileを使用
     const [selectedLat, setSelectedLat] = useState<number | null>(null);
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
 
     const handleMapClick = () => {
-        // ダミーの座標（実際はMapboxのクリックイベントから取得）
+        // ダミーの座標（実際は地図のクリックイベントから取得）
         const dummyLat = Math.random() * 180 - 90;
         const dummyLon = Math.random() * 360 - 180;
         setSelectedLat(dummyLat);
@@ -103,4 +104,3 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
         </div>
     );
 }
-
