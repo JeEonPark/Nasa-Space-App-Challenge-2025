@@ -20,12 +20,12 @@ function App() {
 
   return (
     <div style={{
-      maxWidth: '1200px',
-      margin: '0 auto',
-      padding: `${theme.spacing.xl} ${theme.spacing.md}`,
-      minHeight: '100vh'
+      // maxWidth: '1200px',
+      // margin: '0 auto',
+      // padding: `${theme.spacing.xl} ${theme.spacing.md}`,
+      // minHeight: '100vh'
     }}>
-      <h1 style={{
+      {/* <h1 style={{
         textAlign: 'center',
         marginBottom: theme.spacing.xxl,
         textTransform: 'uppercase',
@@ -35,10 +35,10 @@ function App() {
         letterSpacing: '0.05em'
       }}>
         CupolaQuest
-      </h1>
+      </h1> */}
 
       {/* 現在のステージ表示 */}
-      <div style={{
+      {/* <div style={{
         textAlign: 'center',
         marginBottom: theme.spacing.xl,
         padding: theme.spacing.sm,
@@ -50,7 +50,7 @@ function App() {
         letterSpacing: '0.1em'
       }}>
         STAGE: {gameState.gameStage.toUpperCase()}
-      </div>
+      </div> */}
 
       {/* ステージに応じてコンポーネント表示 */}
       {gameState.gameStage === 'welcome' && (
