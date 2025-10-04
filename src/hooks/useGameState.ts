@@ -9,10 +9,17 @@ export function useGameState() {
         userAnswer: null,
         score: null,
         answerTime: null,
-        gameStage: 'waitingToStart'
+        gameStage: 'welcome'
     });
 
     const [gameStartTime, setGameStartTime] = useState<number | null>(null);
+
+    const startWelcome = () => {
+        setGameState({
+            ...gameState,
+            gameStage: 'waitingToStart'
+        });
+    };
 
     const startGame = () => {
         const randomQuestion = getRandomQuestion();
@@ -84,6 +91,7 @@ export function useGameState() {
 
     return {
         gameState,
+        startWelcome,
         startGame,
         completeZoom,
         showMap,
