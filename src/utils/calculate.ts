@@ -7,7 +7,7 @@
  * @returns 距離（km）
  */
 export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // 地球の半径（km）
+    const R = 6371.0088; // Earth's mean radius in km
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a =
@@ -21,11 +21,15 @@ export function calculateDistance(lat1: number, lon1: number, lat2: number, lon2
 /**
  * 距離に基づいてスコアを計算
  * @param distance 距離（km）
- * @param maxScore 最大スコア（デフォルト: 5000）
+ * @param maxScore 最大スコア（デフォルト: 7000）
  * @returns スコア
  */
-export function calculateScore(distance: number, maxScore: number = 5000): number {
-    return Math.max(0, maxScore - distance);
+export function calculateScore(distance: number, maxScore: number = 7000): number {
+    // Maximum possible distance on Earth (half the circumference)
+    // Earth's mean radius is 6371.0088km, so max distance = π * R
+    const maxDistance = Math.PI * 6371.0088;
+    // Distance 0km = 7000 points, max distance = 0 points
+    return Math.max(0, maxScore * (1 - distance / maxDistance));
 }
 
 /**
@@ -34,10 +38,20 @@ export function calculateScore(distance: number, maxScore: number = 5000): numbe
  * @param maxBonus 最大ボーナス（デフォルト: 1000）
  * @returns ボーナススコア
  */
-export function calculateTimeBonus(answerTime: number, maxBonus: number = 1000): number {
-    // 30秒以内なら最大ボーナス、それ以降は線形減少
-    if (answerTime <= 30) return maxBonus;
-    return Math.max(0, maxBonus - (answerTime - 30) * 20);
+export function calculateTimeBonus(answerTime: number, maxBonus: number = 3000): number {
+    // x < 10: 3000 points
+    // 10 <= x <= 180: 3000 * (1 - (log(1 + 0.001 * (x - 10)) / log(1 + 0.001 * (180 - 10)))^2.6)
+    // x > 180: 0 points
+    if (answerTime < 10) {
+        return 3000;
+    } else if (answerTime <= 180) {
+        const logNumerator = Math.log(1 + 0.001 * (answerTime - 10));
+        const logDenominator = Math.log(1 + 0.001 * (180 - 10));
+        const ratio = logNumerator / logDenominator;
+        return 3000 * (1 - Math.pow(ratio, 2.6));
+    } else {
+        return 0;
+    }
 }
 
 /**
@@ -51,8 +65,8 @@ export function calculateTimeBonus(answerTime: number, maxBonus: number = 1000):
 export function calculateTotalScore(
     distance: number,
     answerTime: number,
-    maxDistanceScore: number = 5000,
-    maxTimeBonus: number = 1000
+    maxDistanceScore: number = 7000,
+    maxTimeBonus: number = 3000
 ): number {
     const distanceScore = calculateScore(distance, maxDistanceScore);
     const timeBonus = calculateTimeBonus(answerTime, maxTimeBonus);
