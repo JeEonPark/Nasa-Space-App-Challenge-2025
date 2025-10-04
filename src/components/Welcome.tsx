@@ -1,4 +1,4 @@
-import { commonStyles, theme } from '../styles/theme';
+import { theme } from '../styles/theme';
 
 interface WelcomeProps {
     onStartGame: () => void;
@@ -6,83 +6,70 @@ interface WelcomeProps {
 
 export default function Welcome({ onStartGame }: WelcomeProps) {
     return (
-        <div style={commonStyles.container}>
-            <h1 style={{
-                fontSize: '3em',
-                fontWeight: '300',
-                color: theme.colors.starWhite,
-                marginBottom: theme.spacing.lg,
-                textTransform: 'uppercase',
-                letterSpacing: '0.1em'
-            }}>
-                CupolaQuest
-            </h1>
-
+        <div
+            onClick={onStartGame}
+            style={{
+                width: '100%',
+                height: '100vh',
+                backgroundImage: 'url(/images/ui/welcome-background.png)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                cursor: 'pointer',
+                position: 'relative'
+            }}
+        >
+            {/* オーバーレイ */}
             <div style={{
-                maxWidth: '600px',
-                margin: '0 auto',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(26, 31, 58, 0.5)',
+                zIndex: 1
+            }} />
+
+            {/* アプリアイコン */}
+            <div style={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                zIndex: 2,
                 textAlign: 'center'
             }}>
-                <p style={{
-                    fontSize: '1.2em',
-                    color: theme.colors.starSilver,
-                    marginBottom: theme.spacing.xl,
-                    lineHeight: '1.6'
-                }}>
-                    ISSの展望モジュール「Cupola」から撮影された地球の写真を見て、
-                    <br />
-                    どこを撮影したのかを当てるゲームです。
-                </p>
-
-                <div style={{
-                    background: `${theme.colors.spaceBlue}40`,
-                    padding: theme.spacing.xl,
-                    borderRadius: theme.borderRadius.md,
-                    border: `1px solid ${theme.shadows.border}`,
-                    marginBottom: theme.spacing.xl
-                }}>
-                    <h3 style={{
-                        fontSize: '1.1em',
-                        color: theme.colors.starWhite,
-                        marginBottom: theme.spacing.md
-                    }}>
-                        ゲームの流れ
-                    </h3>
-                    <div style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: theme.spacing.sm,
-                        textAlign: 'left'
-                    }}>
-                        <p style={{ color: theme.colors.starSilver, fontSize: '0.9em' }}>
-                            1. Cupola窓をクリックしてゲーム開始
-                        </p>
-                        <p style={{ color: theme.colors.starSilver, fontSize: '0.9em' }}>
-                            2. ISSから撮影された地球の写真を確認
-                        </p>
-                        <p style={{ color: theme.colors.starSilver, fontSize: '0.9em' }}>
-                            3. 地図上で撮影場所を推測
-                        </p>
-                        <p style={{ color: theme.colors.starSilver, fontSize: '0.9em' }}>
-                            4. 距離と回答時間でスコア計算
-                        </p>
-                    </div>
-                </div>
-
-                <button
-                    onClick={onStartGame}
+                <img
+                    src="/images/ui/app-icon.png"
+                    alt="CupolaQuest App Icon"
                     style={{
-                        ...commonStyles.button,
-                        padding: `${theme.spacing.lg} ${theme.spacing.xxl}`,
-                        fontSize: '1.1em',
-                        fontWeight: '500',
-                        background: theme.colors.accentBlue,
-                        border: `1px solid ${theme.colors.accentBlue}`,
-                        minWidth: '200px'
+                        width: '80%',
+                        height: '80%',
+                        objectFit: 'contain',
+                        filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+                        display: 'block',
+                        margin: '0 auto'
                     }}
-                >
-                    Start Game
-                </button>
+                />
+                <p style={{
+                    position: 'absolute',
+                    top: '85%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    color: theme.colors.starWhite,
+                    letterSpacing: '0.1em',
+                    fontSize: 'clamp(1em, 2.5vw, 2.3em)',
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                    opacity: 0.9,
+                    zIndex: 3,
+                    fontWeight: '500'
+                }}>
+                    Tap to start
+                </p>
             </div>
         </div>
     );
