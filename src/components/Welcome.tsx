@@ -23,22 +23,36 @@ export default function Welcome({ onStartGame }: WelcomeProps) {
                 position: 'relative'
             }}
         >
+            {/* オーバーレイ */}
+            <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'rgba(26, 31, 58, 0.5)',
+                zIndex: 1
+            }} />
+
             {/* アプリアイコン */}
             <div style={{
                 position: 'absolute',
                 top: '50%',
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
-                zIndex: 2
+                zIndex: 2,
+                textAlign: 'center'
             }}>
                 <img
                     src="/images/ui/app-icon.png"
                     alt="CupolaQuest App Icon"
                     style={{
-                        width: '100%',
-                        height: '100%',
+                        width: '80%',
+                        height: '80%',
                         objectFit: 'contain',
-                        filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
+                        filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+                        display: 'block',
+                        margin: '0 auto'
                     }}
                 />
                 <p style={{
@@ -46,9 +60,11 @@ export default function Welcome({ onStartGame }: WelcomeProps) {
                     top: '85%',
                     left: '50%',
                     transform: 'translateX(-50%)',
-                    color: 'theme.colors.starWhite',
-                    fontSize: '3.0em',
-                    opacity: 0.7,
+                    color: theme.colors.starWhite,
+                    letterSpacing: '0.1em',
+                    fontSize: 'clamp(1em, 2.5vw, 2.3em)',
+                    textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                    opacity: 0.9,
                     zIndex: 3,
                     fontWeight: '500'
                 }}>
