@@ -1,0 +1,72 @@
+:root {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  /* 宇宙っぽいカラーパレット */
+  --space-dark: #0a0e27;
+  --space-blue: #1a1f3a;
+  --space-blue-light: #2a3b5a;
+  --star-white: #e8edf5;
+  --star-silver: #b8c5d6;
+  --accent-blue: #4a90e2;
+
+  background-color: var(--space-dark);
+  color: var(--star-white);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, var(--space-dark) 0%, var(--space-blue) 100%);
+}
+
+h1 {
+  font-size: 2em;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  color: var(--star-white);
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: 300;
+  color: var(--star-silver);
+  margin-bottom: 1rem;
+}
+
+button {
+  border-radius: 4px;
+  border: 1px solid var(--space-blue-light);
+  padding: 0.75em 1.5em;
+  font-size: 0.95em;
+  font-weight: 400;
+  font-family: inherit;
+  background-color: var(--space-blue);
+  color: var(--star-white);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--space-blue-light);
+  border-color: var(--accent-blue);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+}
