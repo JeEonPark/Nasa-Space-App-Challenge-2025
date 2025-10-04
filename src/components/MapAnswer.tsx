@@ -7,7 +7,6 @@ interface MapAnswerProps {
 }
 
 export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) {
-    //　地図と同じ画面に、クイズの画像を表示するときにquestion.fileを使用
     const [selectedLat, setSelectedLat] = useState<number | null>(null);
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
 
