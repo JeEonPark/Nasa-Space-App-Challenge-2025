@@ -10,21 +10,11 @@ interface MapAnswerProps {
     onAnswerSubmit: (answer: UserAnswer) => void;
 }
 
-// 3D地球儀のマーカー用のカスタムアイコン
-const createCustomMarker = (map: maplibregl.Map, lat: number, lng: number) => {
-    const el = document.createElement('div');
-    el.className = 'custom-marker';
-    el.style.cssText = `
-        width: 20px;
-        height: 20px;
-        background: #ff6b6b;
-        border: 3px solid #fff;
-        border-radius: 50%;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        cursor: pointer;
-    `;
-
-    return new maplibregl.Marker(el)
+// デフォルトマーカー作成関数
+const createDefaultMarker = (map: maplibregl.Map, lat: number, lng: number) => {
+    return new maplibregl.Marker({
+        color: '#CB302E'
+    })
         .setLngLat([lng, lat])
         .addTo(map);
 };
@@ -61,7 +51,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                         }
 
                         // 新しいマーカーを追加
-                        marker.current = createCustomMarker(map.current!, lat, lng);
+                        marker.current = createDefaultMarker(map.current!, lat, lng);
                     });
                 }
             });
