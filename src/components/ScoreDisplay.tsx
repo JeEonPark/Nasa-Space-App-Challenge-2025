@@ -1,3 +1,6 @@
+import { useEffect, useRef } from 'react';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import type { Question, UserAnswer } from '../models';
 import { calculateDistance, calculateScore, calculateTimeBonus } from '../utils/calculate';
 import { commonStyles, theme } from '../styles/theme';
@@ -10,7 +13,21 @@ interface ScoreDisplayProps {
     onNextQuestion: () => void;
 }
 
+// デフォルトマーカー作成関数
+const createDefaultMarker = (map: maplibregl.Map, lat: number, lng: number, color: string) => {
+    return new maplibregl.Marker({
+        color: color
+    })
+        .setLngLat([lng, lat])
+        .addTo(map);
+};
+
 export default function ScoreDisplay({ question, userAnswer, score, answerTime, onNextQuestion }: ScoreDisplayProps) {
+    const mapContainer = useRef<HTMLDivElement>(null);
+    const map = useRef<maplibregl.Map | null>(null);
+    const correctMarker = useRef<maplibregl.Marker | null>(null);
+    const userMarker = useRef<maplibregl.Marker | null>(null);
+
     const distance = calculateDistance(
         question.lat,
         question.lon,
@@ -23,65 +40,186 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
     const timeBonus = calculateTimeBonus(answerTime);
     const totalScore = score;
 
+    // マップの初期化
+    useEffect(() => {
+        if (mapContainer.current && !map.current) {
+            map.current = new maplibregl.Map({
+                container: mapContainer.current,
+                style: 'https://demotiles.maplibre.org/globe.json',
+                center: [0, 0],
+                zoom: 2
+            });
+
+            map.current.on('load', () => {
+                if (map.current) {
+                    // 正解マーカー（緑色）
+                    correctMarker.current = createDefaultMarker(
+                        map.current,
+                        question.lat,
+                        question.lon,
+                        '#00CC00'
+                    );
+
+                    // ユーザー回答マーカー（線と同じ色）
+                    userMarker.current = createDefaultMarker(
+                        map.current,
+                        userAnswer.lat,
+                        userAnswer.lon,
+                        '#CB302E'
+                    );
+
+                    // 2つのマーカー間の線を描く
+                    map.current.addSource('connection-line', {
+                        'type': 'geojson',
+                        'data': {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                                'type': 'LineString',
+                                'coordinates': [
+                                    [question.lon, question.lat],
+                                    [userAnswer.lon, userAnswer.lat]
+                                ]
+                            }
+                        }
+                    });
+
+                    // 線のレイヤーを追加
+                    map.current.addLayer({
+                        'id': 'connection-line',
+                        'type': 'line',
+                        'source': 'connection-line',
+                        'layout': {
+                            'line-join': 'round',
+                            'line-cap': 'round'
+                        },
+                        'paint': {
+                            'line-color': '#FF0080',
+                            'line-width': 3,
+                            'line-opacity': 0.9
+                        }
+                    });
+
+                    // 両方のマーカーが表示されるようにビューを調整
+                    const bounds = new maplibregl.LngLatBounds();
+                    bounds.extend([question.lon, question.lat]);
+                    bounds.extend([userAnswer.lon, userAnswer.lat]);
+                    map.current.fitBounds(bounds, { padding: 50 });
+                }
+            });
+        }
+
+        return () => {
+            if (map.current) {
+                // 線のレイヤーとソースを削除
+                if (map.current.getLayer('connection-line')) {
+                    map.current.removeLayer('connection-line');
+                }
+                if (map.current.getSource('connection-line')) {
+                    map.current.removeSource('connection-line');
+                }
+                map.current.remove();
+                map.current = null;
+            }
+        };
+    }, [question.lat, question.lon, userAnswer.lat, userAnswer.lon]);
+
     return (
         <div style={commonStyles.container}>
             <h2 style={commonStyles.title}>Results</h2>
 
-            {/* 地図プレースホルダー（正解とユーザーの回答を表示） */}
+            {/* 3D地球儀地図（正解とユーザーの回答をマーカーで表示） */}
             <div style={{
                 ...commonStyles.card,
-                minHeight: '200px'
+                minHeight: '400px',
+                position: 'relative'
             }}>
                 <p style={{
                     fontSize: '1em',
-                    marginBottom: '30px',
+                    marginBottom: '20px',
                     color: theme.colors.starSilver,
                     opacity: 0.8
                 }}>
                     Map visualization
                 </p>
+
+                {/* 3D地球儀 */}
+                <div
+                    ref={mapContainer}
+                    style={{
+                        height: '350px',
+                        width: '100%',
+                        borderRadius: '4px',
+                        border: '1px solid rgba(184, 197, 214, 0.3)'
+                    }}
+                />
+
+                {/* マーカー凡例 */}
                 <div style={{
                     display: 'flex',
-                    justifyContent: 'space-around',
-                    marginTop: '20px',
-                    gap: '20px',
+                    justifyContent: 'center',
+                    gap: '30px',
+                    marginTop: '15px',
                     flexWrap: 'wrap'
                 }}>
                     <div style={{
-                        padding: '20px',
-                        background: theme.shadows.card,
-                        borderRadius: theme.borderRadius.sm,
-                        border: `1px solid ${theme.colors.accentBlue}40`,
-                        minWidth: '180px'
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
                     }}>
-                        <p style={{
-                            fontWeight: '300',
-                            color: theme.colors.accentBlue,
-                            marginBottom: '10px',
-                            fontSize: '0.9em'
+                        <div style={{
+                            width: '20px',
+                            height: '20px',
+                            background: '#00CC00',
+                            border: '2px solid #fff',
+                            borderRadius: '50%',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                        }} />
+                        <span style={{
+                            fontSize: '0.9em',
+                            color: theme.colors.starSilver
                         }}>
                             Correct Location
-                        </p>
-                        <p style={{ fontSize: '0.85em' }}>Lat: {question.lat.toFixed(2)}°</p>
-                        <p style={{ fontSize: '0.85em' }}>Lon: {question.lon.toFixed(2)}°</p>
+                        </span>
                     </div>
                     <div style={{
-                        padding: '20px',
-                        background: theme.shadows.card,
-                        borderRadius: theme.borderRadius.sm,
-                        border: `1px solid ${theme.shadows.border}`,
-                        minWidth: '180px'
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
                     }}>
-                        <p style={{
-                            fontWeight: '300',
-                            color: theme.colors.starSilver,
-                            marginBottom: '10px',
-                            fontSize: '0.9em'
+                        <div style={{
+                            width: '20px',
+                            height: '20px',
+                            background: '#CB302E',
+                            border: '2px solid #fff',
+                            borderRadius: '50%',
+                            boxShadow: '0 2px 4px rgba(0,0,0,0.3)'
+                        }} />
+                        <span style={{
+                            fontSize: '0.9em',
+                            color: theme.colors.starSilver
                         }}>
                             Your Answer
-                        </p>
-                        <p style={{ fontSize: '0.85em' }}>Lat: {userAnswer.lat.toFixed(2)}°</p>
-                        <p style={{ fontSize: '0.85em' }}>Lon: {userAnswer.lon.toFixed(2)}°</p>
+                        </span>
+                    </div>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px'
+                    }}>
+                        <div style={{
+                            width: '20px',
+                            height: '3px',
+                            background: '#FF0080',
+                            borderRadius: '2px',
+                            boxShadow: '0 1px 2px rgba(0,0,0,0.3)'
+                        }} />
+                        <span style={{
+                            fontSize: '0.9em',
+                            color: theme.colors.starSilver
+                        }}>
+                            Distance Line
+                        </span>
                     </div>
                 </div>
             </div>
