@@ -1,23 +1,12 @@
 import type { Question, UserAnswer } from '../types';
+import { calculateDistance } from '../utils/distance';
+import { commonStyles, theme } from '../styles/theme';
 
 interface ScoreDisplayProps {
     question: Question;
     userAnswer: UserAnswer;
     score: number;
     onNextQuestion: () => void;
-}
-
-// Haversine式で距離計算（簡易版）
-function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
-    const R = 6371; // 地球の半径（km）
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLon = (lon2 - lon1) * Math.PI / 180;
-    const a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
 }
 
 export default function ScoreDisplay({ question, userAnswer, score, onNextQuestion }: ScoreDisplayProps) {
@@ -29,31 +18,18 @@ export default function ScoreDisplay({ question, userAnswer, score, onNextQuesti
     );
 
     return (
-        <div style={{
-            border: '1px solid rgba(184, 197, 214, 0.2)',
-            padding: '40px',
-            textAlign: 'center',
-            minHeight: '500px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '30px',
-            background: 'rgba(26, 31, 58, 0.4)',
-            borderRadius: '8px'
-        }}>
-            <h2>Results</h2>
+        <div style={commonStyles.container}>
+            <h2 style={commonStyles.title}>Results</h2>
 
             {/* 地図プレースホルダー（正解とユーザーの回答を表示） */}
             <div style={{
-                border: '1px solid rgba(184, 197, 214, 0.3)',
-                padding: '40px',
-                background: 'rgba(10, 14, 39, 0.5)',
-                minHeight: '200px',
-                borderRadius: '4px'
+                ...commonStyles.card,
+                minHeight: '200px'
             }}>
                 <p style={{
                     fontSize: '1em',
                     marginBottom: '30px',
-                    color: 'var(--star-silver)',
+                    color: theme.colors.starSilver,
                     opacity: 0.8
                 }}>
                     Map visualization
@@ -67,14 +43,14 @@ export default function ScoreDisplay({ question, userAnswer, score, onNextQuesti
                 }}>
                     <div style={{
                         padding: '20px',
-                        background: 'rgba(42, 59, 90, 0.6)',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(74, 144, 226, 0.3)',
+                        background: theme.shadows.card,
+                        borderRadius: theme.borderRadius.sm,
+                        border: `1px solid ${theme.colors.accentBlue}40`,
                         minWidth: '180px'
                     }}>
                         <p style={{
                             fontWeight: '300',
-                            color: 'var(--accent-blue)',
+                            color: theme.colors.accentBlue,
                             marginBottom: '10px',
                             fontSize: '0.9em'
                         }}>
@@ -85,14 +61,14 @@ export default function ScoreDisplay({ question, userAnswer, score, onNextQuesti
                     </div>
                     <div style={{
                         padding: '20px',
-                        background: 'rgba(42, 59, 90, 0.6)',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(184, 197, 214, 0.2)',
+                        background: theme.shadows.card,
+                        borderRadius: theme.borderRadius.sm,
+                        border: `1px solid ${theme.shadows.border}`,
                         minWidth: '180px'
                     }}>
                         <p style={{
                             fontWeight: '300',
-                            color: 'var(--star-silver)',
+                            color: theme.colors.starSilver,
                             marginBottom: '10px',
                             fontSize: '0.9em'
                         }}>
@@ -107,21 +83,21 @@ export default function ScoreDisplay({ question, userAnswer, score, onNextQuesti
             {/* スコア表示 */}
             <div style={{
                 padding: '30px',
-                background: 'rgba(74, 144, 226, 0.1)',
-                borderRadius: '4px',
-                border: '1px solid rgba(74, 144, 226, 0.3)'
+                background: `${theme.colors.accentBlue}20`,
+                borderRadius: theme.borderRadius.sm,
+                border: `1px solid ${theme.colors.accentBlue}50`
             }}>
                 <p style={{
                     fontSize: '2em',
                     fontWeight: '300',
                     margin: '10px 0',
-                    color: 'var(--star-white)'
+                    color: theme.colors.starWhite
                 }}>
                     {score.toFixed(0)}
                 </p>
                 <p style={{
                     fontSize: '0.9em',
-                    color: 'var(--star-silver)',
+                    color: theme.colors.starSilver,
                     marginTop: '10px'
                 }}>
                     Distance: {distance.toFixed(2)} km
@@ -130,11 +106,7 @@ export default function ScoreDisplay({ question, userAnswer, score, onNextQuesti
 
             <button
                 onClick={onNextQuestion}
-                style={{
-                    padding: '15px 40px',
-                    fontSize: '0.95em',
-                    marginTop: '10px'
-                }}
+                style={commonStyles.button}
             >
                 Next Question
             </button>
