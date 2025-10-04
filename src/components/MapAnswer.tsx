@@ -42,10 +42,44 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
         if (mapContainer.current && !map.current) {
             map.current = new maplibregl.Map({
                 container: mapContainer.current,
-                style: 'https://demotiles.maplibre.org/globe.json',
+                style: {
+                    version: 8,
+                    sources: {
+                        'background': {
+                            type: 'raster',
+                            tiles: ['/images/ui/map_background.jpg'],
+                            tileSize: 256
+                        },
+                        'osm': {
+                            type: 'raster',
+                            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                            tileSize: 256,
+                            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        }
+                    },
+                    layers: [
+                        {
+                            id: 'background',
+                            type: 'raster',
+                            source: 'background',
+                            paint: {
+                                'raster-opacity': 0.4
+                            }
+                        },
+                        {
+                            id: 'osm',
+                            type: 'raster',
+                            source: 'osm',
+                            paint: {
+                                'raster-opacity': 0.8
+                            }
+                        }
+                    ],
+                    projection: 'globe'
+                },
                 center: [0, 0],
                 zoom: 2
-            });
+            } as any);
 
             // 3D地球儀の設定
             map.current.on('load', () => {
@@ -107,19 +141,14 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                 borderRadius: '4px',
                 overflow: 'hidden',
                 minHeight: '350px',
-                position: 'relative',
-                backgroundImage: 'url(/images/ui/map_background.jpg)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat'
+                position: 'relative'
             }}>
                 <div
                     ref={mapContainer}
                     style={{
                         height: '350px',
                         width: '100%',
-                        borderRadius: '4px',
-                        backgroundColor: 'rgba(0, 0, 0, 0.3)'
+                        borderRadius: '4px'
                     }}
                 />
 
