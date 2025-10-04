@@ -20,13 +20,19 @@ export interface UserAnswer {
 }
 
 // ゲームステージ
-export type GameStage = 'windowSelect' | 'zoom' | 'photoDisplay' | 'mapAnswer' | 'scoreDisplay';
+export type GameStage =
+    | 'waitingToStart'      // 開始を待機中
+    | 'zoomingToPhoto'      // 写真にズーム中
+    | 'viewingPhoto'        // 写真を表示中
+    | 'answeringOnMap'      // 地図で回答中
+    | 'showingResults';     // 結果表示中
 
 // ゲーム全体の状態
 export interface GameState {
     currentQuestion: Question | null;
     userAnswer: UserAnswer | null;
     score: number | null;
+    answerTime: number | null;  // 回答時間（秒）
     gameStage: GameStage;
 }
 

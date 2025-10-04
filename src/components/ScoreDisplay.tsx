@@ -1,21 +1,27 @@
 import type { Question, UserAnswer } from '../types';
-import { calculateDistance } from '../utils/distance';
+import { calculateDistance, calculateScore, calculateTimeBonus } from '../utils/calculate';
 import { commonStyles, theme } from '../styles/theme';
 
 interface ScoreDisplayProps {
     question: Question;
     userAnswer: UserAnswer;
     score: number;
+    answerTime: number;
     onNextQuestion: () => void;
 }
 
-export default function ScoreDisplay({ question, userAnswer, score, onNextQuestion }: ScoreDisplayProps) {
+export default function ScoreDisplay({ question, userAnswer, score, answerTime, onNextQuestion }: ScoreDisplayProps) {
     const distance = calculateDistance(
         question.lat,
         question.lon,
         userAnswer.lat,
         userAnswer.lon
     );
+
+    // スコアの内訳を計算
+    const distanceScore = calculateScore(distance);
+    const timeBonus = calculateTimeBonus(answerTime);
+    const totalScore = score;
 
     return (
         <div style={commonStyles.container}>
@@ -87,21 +93,95 @@ export default function ScoreDisplay({ question, userAnswer, score, onNextQuesti
                 borderRadius: theme.borderRadius.sm,
                 border: `1px solid ${theme.colors.accentBlue}50`
             }}>
+                {/* 総合スコア */}
                 <p style={{
-                    fontSize: '2em',
+                    fontSize: '2.5em',
                     fontWeight: '300',
                     margin: '10px 0',
                     color: theme.colors.starWhite
                 }}>
-                    {score.toFixed(0)}
+                    {totalScore.toFixed(0)}
                 </p>
                 <p style={{
-                    fontSize: '0.9em',
+                    fontSize: '1em',
                     color: theme.colors.starSilver,
-                    marginTop: '10px'
+                    marginBottom: '20px'
                 }}>
-                    Distance: {distance.toFixed(2)} km
+                    Total Score
                 </p>
+
+                {/* スコア内訳 */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-around',
+                    gap: '20px',
+                    marginTop: '20px',
+                    flexWrap: 'wrap'
+                }}>
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '15px',
+                        background: `${theme.colors.spaceBlue}60`,
+                        borderRadius: theme.borderRadius.sm,
+                        minWidth: '120px'
+                    }}>
+                        <p style={{
+                            fontSize: '1.5em',
+                            fontWeight: '300',
+                            color: theme.colors.starWhite,
+                            margin: '5px 0'
+                        }}>
+                            {distanceScore.toFixed(0)}
+                        </p>
+                        <p style={{
+                            fontSize: '0.8em',
+                            color: theme.colors.starSilver,
+                            margin: '0'
+                        }}>
+                            Distance Score
+                        </p>
+                        <p style={{
+                            fontSize: '0.7em',
+                            color: theme.colors.starSilver,
+                            opacity: 0.7,
+                            margin: '5px 0 0 0'
+                        }}>
+                            {distance.toFixed(1)} km
+                        </p>
+                    </div>
+
+                    <div style={{
+                        textAlign: 'center',
+                        padding: '15px',
+                        background: `${theme.colors.spaceBlue}60`,
+                        borderRadius: theme.borderRadius.sm,
+                        minWidth: '120px'
+                    }}>
+                        <p style={{
+                            fontSize: '1.5em',
+                            fontWeight: '300',
+                            color: theme.colors.starWhite,
+                            margin: '5px 0'
+                        }}>
+                            {timeBonus.toFixed(0)}
+                        </p>
+                        <p style={{
+                            fontSize: '0.8em',
+                            color: theme.colors.starSilver,
+                            margin: '0'
+                        }}>
+                            Time Bonus
+                        </p>
+                        <p style={{
+                            fontSize: '0.7em',
+                            color: theme.colors.starSilver,
+                            opacity: 0.7,
+                            margin: '5px 0 0 0'
+                        }}>
+                            {answerTime.toFixed(1)}s
+                        </p>
+                    </div>
+                </div>
             </div>
 
             <button

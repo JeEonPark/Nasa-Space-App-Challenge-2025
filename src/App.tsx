@@ -51,36 +51,38 @@ function App() {
       </div>
 
       {/* ステージに応じてコンポーネント表示 */}
-      {gameState.gameStage === 'windowSelect' && (
+      {gameState.gameStage === 'waitingToStart' && (
         <WindowSelector onWindowClick={startGame} />
       )}
 
-      {gameState.gameStage === 'zoom' && (
+      {gameState.gameStage === 'zoomingToPhoto' && (
         <ZoomAnimation onAnimationComplete={completeZoom} />
       )}
 
-      {gameState.gameStage === 'photoDisplay' && gameState.currentQuestion && (
+      {gameState.gameStage === 'viewingPhoto' && gameState.currentQuestion && (
         <PhotoDisplay
           question={gameState.currentQuestion}
           onPhotoClick={showMap}
         />
       )}
 
-      {gameState.gameStage === 'mapAnswer' && gameState.currentQuestion && (
+      {gameState.gameStage === 'answeringOnMap' && gameState.currentQuestion && (
         <MapAnswer
           question={gameState.currentQuestion}
           onAnswerSubmit={submitAnswer}
         />
       )}
 
-      {gameState.gameStage === 'scoreDisplay' &&
+      {gameState.gameStage === 'showingResults' &&
         gameState.currentQuestion &&
         gameState.userAnswer &&
-        gameState.score !== null && (
+        gameState.score !== null &&
+        gameState.answerTime !== null && (
           <ScoreDisplay
             question={gameState.currentQuestion}
             userAnswer={gameState.userAnswer}
             score={gameState.score}
+            answerTime={gameState.answerTime}
             onNextQuestion={nextQuestion}
           />
         )}
