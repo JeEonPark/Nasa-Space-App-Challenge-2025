@@ -40,7 +40,7 @@ export function calculateScore(distance: number, maxScore: number = 7000): numbe
  */
 export function calculateTimeBonus(answerTime: number, maxBonus: number = 3000): number {
     // x < 10: 3000 points
-    // 10 <= x <= 180: 3000 * (1 - (log(1 + 0.001 * (x - 10)) / log(1 + 0.001 * (180 - 10)))^2.6)
+    // 10 <= x <= 180: 3000 * (1 - (log(1 + 0.001 * (x - 10)) / log(1 + 0.001 * (180 - 10)))^0.5)
     // x > 180: 0 points
     if (answerTime < 10) {
         return 3000;
@@ -48,7 +48,7 @@ export function calculateTimeBonus(answerTime: number, maxBonus: number = 3000):
         const logNumerator = Math.log(1 + 0.001 * (answerTime - 10));
         const logDenominator = Math.log(1 + 0.001 * (180 - 10));
         const ratio = logNumerator / logDenominator;
-        return 3000 * (1 - Math.pow(ratio, 2.6));
+        return 3000 * (1 - Math.pow(ratio, 0.5));
     } else {
         return 0;
     }
