@@ -1,22 +1,7 @@
-import { useState, useCallback } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMapEvents, ZoomControl } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import { useState, useEffect, useRef } from 'react';
+import maplibregl from 'maplibre-gl';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import type { Question, UserAnswer } from '../models';
-
-// 南北方向の境界を設定（-85°から85°）
-const maxBounds = L.latLngBounds(
-    L.latLng(-85, -180), // 南西の角
-    L.latLng(85, 180)    // 北東の角
-);
-
-// Leafletのマーカーアイコンの設定
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-    iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-    iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
 
 // 型定義の追加
 
@@ -25,25 +10,70 @@ interface MapAnswerProps {
     onAnswerSubmit: (answer: UserAnswer) => void;
 }
 
-// 地図クリックイベントを処理するコンポーネント
-function MapClickHandler({ onMapClick }: { onMapClick: (lat: number, lng: number) => void }) {
-    useMapEvents({
-        click: (e) => {
-            const { lat, lng } = e.latlng;
-            onMapClick(lat, lng);
-        },
-    });
-    return null;
-}
+// 3D地球儀のマーカー用のカスタムアイコン
+const createCustomMarker = (map: maplibregl.Map, lat: number, lng: number) => {
+    const el = document.createElement('div');
+    el.className = 'custom-marker';
+    el.style.cssText = `
+        width: 20px;
+        height: 20px;
+        background: #ff6b6b;
+        border: 3px solid #fff;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        cursor: pointer;
+    `;
+
+    return new maplibregl.Marker(el)
+        .setLngLat([lng, lat])
+        .addTo(map);
+};
 
 export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
     //　地図と同じ画面に、クイズの画像を表示するときにquestion.fileを使用
     const [selectedLat, setSelectedLat] = useState<number | null>(null);
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
+    const mapContainer = useRef<HTMLDivElement>(null);
+    const map = useRef<maplibregl.Map | null>(null);
+    const marker = useRef<maplibregl.Marker | null>(null);
 
-    const handleMapClick = useCallback((lat: number, lng: number) => {
-        setSelectedLat(lat);
-        setSelectedLon(lng);
+    // 3D地球儀の初期化
+    useEffect(() => {
+        if (mapContainer.current && !map.current) {
+            map.current = new maplibregl.Map({
+                container: mapContainer.current,
+                style: 'https://demotiles.maplibre.org/globe.json',
+                center: [0, 0],
+                zoom: 2
+            });
+
+            // 3D地球儀の設定
+            map.current.on('load', () => {
+                if (map.current) {
+                    // クリックイベントの設定
+                    map.current.on('click', (e) => {
+                        const { lng, lat } = e.lngLat;
+                        setSelectedLat(lat);
+                        setSelectedLon(lng);
+
+                        // 既存のマーカーを削除
+                        if (marker.current) {
+                            marker.current.remove();
+                        }
+
+                        // 新しいマーカーを追加
+                        marker.current = createCustomMarker(map.current!, lat, lng);
+                    });
+                }
+            });
+        }
+
+        return () => {
+            if (map.current) {
+                map.current.remove();
+                map.current = null;
+            }
+        };
     }, []);
 
     const handleSubmit = () => {
@@ -58,6 +88,7 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
     };
 
     return (
+
         <>
             <div style={{
                 width: '100%',
@@ -72,56 +103,26 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                 padding: '20px'
             }}>
 
-                {/* 左側: Leaflet地図 */}
+                {/* 左側: 3D地球儀地図 */}
                 <div style={{
                     border: '1px solid rgba(184, 197, 214, 0.3)',
                     borderRadius: '4px',
                     overflow: 'hidden',
                     height: '70vh',
-                    width: '55%',
+                    width: '60%',
+                    maxWidth: '600px',
                     position: 'relative'
                 }}>
-                    <MapContainer
-                        center={[0, 0]}
-                        zoom={2}
-                        minZoom={2}
-                        maxZoom={12}
-                        style={{ height: '100%', width: '100%' }}
-                        attributionControl={false}
-                        zoomControl={false}
-                        preferCanvas={false}
-                        zoomDelta={1}
-                        zoomSnap={1}
-                        worldCopyJump={true}
-                        maxBounds={maxBounds}
-                        maxBoundsViscosity={1.0}
-                    >
-                        <TileLayer
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        />
+                    <div
+                        ref={mapContainer}
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            borderRadius: '4px'
+                        }}
+                    />
 
-                        <MapClickHandler onMapClick={handleMapClick} />
-                        <ZoomControl position="topright" />
-
-                        {selectedLat !== null && selectedLon !== null && (
-                            <Marker position={[selectedLat, selectedLon]}>
-                                <Popup>
-                                    <div style={{
-                                        padding: '8px',
-                                        fontSize: '14px',
-                                        color: '#333'
-                                    }}>
-                                        <strong>選択された座標</strong><br />
-                                        緯度: {selectedLat.toFixed(4)}°<br />
-                                        経度: {selectedLon.toFixed(4)}°
-                                    </div>
-                                </Popup>
-                            </Marker>
-                        )}
-                    </MapContainer>
-
-                    {/* 地図の上にオーバーレイ情報を表示 */}
+                    {/* 3D地球儀の上にオーバーレイ情報を表示 */}
                     <div style={{
                         position: 'absolute',
                         top: '10px',
@@ -134,13 +135,32 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                         fontSize: '0.9em',
                         zIndex: 1000
                     }}>
-                        <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>地図操作</p>
+                        <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>3D地球儀操作</p>
                         <p style={{ margin: '0', fontSize: '0.8em', opacity: 0.8 }}>
                             クリックしてマーカーを配置<br />
-                            ズーム: 2-12レベル<br />
-                            東西移動: 自由<br />
-                            南北移動: -85°〜85°
+                            マウスドラッグ: 回転<br />
+                            ホイール: ズーム<br />
+                            右クリック+ドラッグ: 傾斜
                         </p>
+                        {selectedLat !== null && selectedLon !== null && (
+                            <div style={{
+                                marginTop: '10px',
+                                padding: '8px',
+                                background: 'rgba(42, 59, 90, 0.6)',
+                                borderRadius: '4px',
+                                border: '1px solid rgba(184, 197, 214, 0.2)'
+                            }}>
+                                <p style={{ margin: '0 0 5px 0', fontSize: '0.8em', fontWeight: 'bold' }}>
+                                    選択された座標
+                                </p>
+                                <p style={{ margin: '0', fontSize: '0.75em' }}>
+                                    緯度: {selectedLat.toFixed(4)}°
+                                </p>
+                                <p style={{ margin: '0', fontSize: '0.75em' }}>
+                                    経度: {selectedLon.toFixed(4)}°
+                                </p>
+                            </div>
+                        )}
                     </div>
                 </div>
 
@@ -150,6 +170,7 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                     borderRadius: '4px',
                     height: '70vh',
                     width: '30%',
+                    maxWidth: '300px',
                     background: 'rgba(26, 31, 58, 0.6)',
                     padding: '20px',
                     display: 'flex',
@@ -206,6 +227,46 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                             </p>
                         </div>
                     )}
+
+                    {/* 操作説明 */}
+                    <div style={{
+                        background: 'rgba(42, 59, 90, 0.4)',
+                        padding: '15px',
+                        borderRadius: '4px',
+                        border: '1px solid rgba(184, 197, 214, 0.2)'
+                    }}>
+                        <h4 style={{
+                            margin: '0 0 10px 0',
+                            color: 'var(--star-white)',
+                            fontSize: '1em'
+                        }}>
+                            操作方法
+                        </h4>
+                        <p style={{
+                            margin: '0 0 8px 0',
+                            fontSize: '0.8em',
+                            color: 'var(--star-silver)',
+                            lineHeight: '1.4'
+                        }}>
+                            • 地図をクリックしてマーカーを配置
+                        </p>
+                        <p style={{
+                            margin: '0 0 8px 0',
+                            fontSize: '0.8em',
+                            color: 'var(--star-silver)',
+                            lineHeight: '1.4'
+                        }}>
+                            • マウスドラッグ: 回転
+                        </p>
+                        <p style={{
+                            margin: '0',
+                            fontSize: '0.8em',
+                            color: 'var(--star-silver)',
+                            lineHeight: '1.4'
+                        }}>
+                            • ホイール: ズーム
+                        </p>
+                    </div>
                 </div>
             </div>
 
@@ -238,7 +299,7 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                 >
                     Submit Answer
                 </button>
-            </div>
+            </div >
         </>
     );
 }
