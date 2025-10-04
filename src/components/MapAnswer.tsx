@@ -51,7 +51,7 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
             map.current.on('load', () => {
                 if (map.current) {
                     // クリックイベントの設定
-                    map.current.on('click', (e) => {
+                    map.current.on('click', (e: maplibregl.MapMouseEvent) => {
                         const { lng, lat } = e.lngLat;
                         setSelectedLat(lat);
                         setSelectedLon(lng);
@@ -109,8 +109,7 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                     borderRadius: '4px',
                     overflow: 'hidden',
                     height: '70vh',
-                    width: '60%',
-                    maxWidth: '600px',
+                    width: '55%',
                     position: 'relative'
                 }}>
                     <div
@@ -121,28 +120,6 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                             borderRadius: '4px'
                         }}
                     />
-
-                    {/* 3D地球儀の上にオーバーレイ情報を表示 */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '10px',
-                        left: '10px',
-                        background: 'rgba(26, 31, 58, 0.8)',
-                        padding: '10px 15px',
-                        borderRadius: '4px',
-                        border: '1px solid rgba(184, 197, 214, 0.3)',
-                        color: 'var(--star-white)',
-                        fontSize: '0.9em',
-                        zIndex: 1000
-                    }}>
-                        <p style={{ margin: '0 0 5px 0', fontWeight: 'bold' }}>3D地球儀操作</p>
-                        <p style={{ margin: '0', fontSize: '0.8em', opacity: 0.8 }}>
-                            クリックしてマーカーを配置<br />
-                            マウスドラッグ: 回転<br />
-                            ホイール: ズーム<br />
-                            右クリック+ドラッグ: 傾斜
-                        </p>
-                    </div>
                 </div>
 
                 {/* 右側: 情報表示エリア */}
@@ -150,8 +127,7 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                     border: '1px solid rgba(184, 197, 214, 0.3)',
                     borderRadius: '4px',
                     height: '70vh',
-                    width: '30%',
-                    maxWidth: '300px',
+                    width: '35%',
                     background: 'rgba(26, 31, 58, 0.6)',
                     padding: '20px',
                     display: 'flex',
@@ -248,39 +224,33 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                             • ホイール: ズーム
                         </p>
                     </div>
+
+                    {/* Submitボタン */}
+                    <button
+                        onClick={handleSubmit}
+                        disabled={selectedLat === null || selectedLon === null}
+                        style={{
+                            padding: '15px 40px',
+                            fontSize: '0.95em',
+                            background: selectedLat !== null && selectedLon !== null
+                                ? 'var(--star-blue)'
+                                : 'rgba(184, 197, 214, 0.3)',
+                            color: 'var(--star-white)',
+                            border: '1px solid rgba(184, 197, 214, 0.3)',
+                            borderRadius: '4px',
+                            cursor: selectedLat !== null && selectedLon !== null
+                                ? 'pointer'
+                                : 'not-allowed',
+                            opacity: selectedLat !== null && selectedLon !== null ? 1 : 0.6,
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                            width: '100%',
+                            marginTop: '10px'
+                        }}
+                    >
+                        Submit Answer
+                    </button>
                 </div>
             </div>
-
-            {/* Submitボタン（画面下部に固定） */}
-            <div style={{
-                position: 'fixed',
-                bottom: '20px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                zIndex: 1000
-            }}>
-                <button
-                    onClick={handleSubmit}
-                    disabled={selectedLat === null || selectedLon === null}
-                    style={{
-                        padding: '15px 40px',
-                        fontSize: '0.95em',
-                        background: selectedLat !== null && selectedLon !== null
-                            ? 'var(--star-blue)'
-                            : 'rgba(184, 197, 214, 0.3)',
-                        color: 'var(--star-white)',
-                        border: '1px solid rgba(184, 197, 214, 0.3)',
-                        borderRadius: '4px',
-                        cursor: selectedLat !== null && selectedLon !== null
-                            ? 'pointer'
-                            : 'not-allowed',
-                        opacity: selectedLat !== null && selectedLon !== null ? 1 : 0.6,
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-                    }}
-                >
-                    Submit Answer
-                </button>
-            </div >
         </>
     );
 }
