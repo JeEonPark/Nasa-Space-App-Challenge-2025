@@ -1,3 +1,4 @@
+import Welcome from './components/Welcome';
 import WindowSelector from './components/WindowSelector';
 import ZoomAnimation from './components/ZoomAnimation';
 import PhotoDisplay from './components/PhotoDisplay';
@@ -9,6 +10,7 @@ import { theme } from './styles/theme';
 function App() {
   const {
     gameState,
+    startWelcome,
     startGame,
     completeZoom,
     showMap,
@@ -51,6 +53,10 @@ function App() {
       </div>
 
       {/* ステージに応じてコンポーネント表示 */}
+      {gameState.gameStage === 'welcome' && (
+        <Welcome onStartGame={startWelcome} />
+      )}
+
       {gameState.gameStage === 'waitingToStart' && (
         <WindowSelector onWindowClick={startGame} />
       )}

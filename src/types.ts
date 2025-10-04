@@ -21,6 +21,7 @@ export interface UserAnswer {
 
 // ゲームステージ
 export type GameStage =
+    | 'welcome'             // スタート画面（初回のみ）
     | 'waitingToStart'      // 開始を待機中
     | 'zoomingToPhoto'      // 写真にズーム中
     | 'viewingPhoto'        // 写真を表示中
