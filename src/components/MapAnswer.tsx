@@ -29,8 +29,7 @@ const createCustomMarker = (map: maplibregl.Map, lat: number, lng: number) => {
         .addTo(map);
 };
 
-export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
-    //　地図と同じ画面に、クイズの画像を表示するときにquestion.fileを使用
+export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) {
     const [selectedLat, setSelectedLat] = useState<number | null>(null);
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
     const mapContainer = useRef<HTMLDivElement>(null);
@@ -142,14 +141,32 @@ export default function MapAnswer({ onAnswerSubmit }: MapAnswerProps) {
                         height: '200px',
                         background: 'rgba(42, 59, 90, 0.3)',
                         display: 'flex',
+                        flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        color: 'var(--star-white)',
-                        fontSize: '0.9em'
+                        padding: '10px',
+                        overflow: 'hidden'
                     }}>
-                        {/* ここに写真を表示 */}
-                        <p style={{ margin: 0, opacity: 0.7 }}>
-                            写真がここに表示されます
+                        <img
+                            src={`/iss_photos/${question.file}`}
+                            alt={question.title}
+                            style={{
+                                maxWidth: '100%',
+                                maxHeight: '150px',
+                                objectFit: 'contain',
+                                borderRadius: '4px',
+                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                            }}
+                        />
+                        <p style={{
+                            margin: '8px 0 0 0',
+                            color: 'var(--star-white)',
+                            fontSize: '0.8em',
+                            textAlign: 'center',
+                            opacity: 0.9,
+                            lineHeight: '1.2'
+                        }}>
+                            {question.title}
                         </p>
                     </div>
 
