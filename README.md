@@ -1,166 +1,108 @@
-# CUPOLA QUEST
+# CUPOLA QUEST ✨🌍
 
-국제우주정거장(ISS) 컵올라(Cupola)에서 내려다본 실제 지구 사진으로 즐기는 인터랙티브 위치 추측 게임
+국제우주정거장(ISS) Cupola 창에서 내려다본 실제 지구 사진으로 즐기는 인터랙티브 위치 추측 게임
 
-- Live: https://cupola-quest.vercel.app
+- 바로 플레이: https://cupola-quest.vercel.app ▶️
 
-## 요약
+## 개요
 
-CUPOLA QUEST는 ISS의 관측창인 Cupola에서 촬영된 실제 사진을 바탕으로, 사진이 촬영된 지구상의 위치를 맞히는 웹 기반 게임입니다. 사용자는 3D 지구본 위에 핀을 꽂아 위치를 추측하고, 정답 공개와 함께 점수를 받습니다. 점수는 거리 정확도와 답변 속도를 함께 반영하여 계산되므로, 더 빠르고 더 정확한 추측일수록 높은 점수를 획득합니다.
+이 프로젝트는 ISS Cupola에서 촬영된 실제 지구 사진을 기반으로, 사진의 촬영 위치를 3D 지구본 위에 추측해보는 웹 애플리케이션입니다. 정답 공개 후에는 추측 위치와의 거리, 그리고 응답 시간을 바탕으로 점수가 계산되어 피드백이 제공됩니다. 구성 요소와 데이터, 점수 계산 방식은 아래에 상세히 기술되어 있습니다.
 
-이 프로젝트는 ISS에서 가장 깊게 체험되는 감각인 ‘시각(보는 경험)’을 모두에게 열려 있는 학습 도구로 전환합니다. NASA의 공개 데이터를 기반으로 한 상호작용적 디자인과 게임 메커닉을 결합해, 단순 관람을 능동적 탐구로 바꾸고, 누구나 우주비행사의 시선으로 지구를 발견하도록 돕습니다. “그냥 시작했는데, 어느새 우주를 사랑하게 된다”는 경험을 목표로 합니다.
+## 주요 기능
 
-## 무엇을 하고, 어떻게 동작하나요?
+- 실제 ISS 사진 표시(회전 보정 포함) 🛰️
+- 3D 지구본 인터랙션(MapLibre GL JS) 🌍
+- 클릭으로 핀 배치 → 정답 공개 → 점수 계산 ⏱️
+- 반응형 UI, 빠른 개발/빌드 흐름(Vite) ⚡
 
-- 실제 ISS Cupola 촬영 사진을 한 장 제시합니다.
-- 사용자는 사진을 관찰한 뒤 “Guess”를 눌러 3D 지구본(MapLibre GL JS)에서 촬영 위치를 클릭합니다.
-- 정답 위치가 공개되고, 나의 추측과 정답 사이의 대지구 곡선 거리(하버사인)를 계산합니다.
-- 거리 점수와 시간 보너스를 합산해 총점을 보여주고, 다음 라운드로 진행합니다.
+## 플레이 흐름
 
-### 플레이 흐름
+1. 시작 화면에서 탭하여 시작(`src/components/Welcome.tsx`).
+2. 창 선택 화면에서 플레이 진입(`src/components/WindowSelector.tsx`).
+3. 사진 화면에서 ISS 사진을 관찰(`src/components/PhotoDisplay.tsx`).
+4. 지도 화면에서 위치 클릭으로 추측(`src/components/MapAnswer.tsx`).
+5. 결과 화면에서 정답/추측/거리/점수 확인(`src/components/ScoreDisplay.tsx`).
 
-1) 시작 화면(탭하여 시작) → 2) Cupola 창 선택 → 3) 사진 보기 → 4) 지도에서 위치 추측 → 5) 점수 및 피드백 확인
+## 조작 방법
 
-### 점수 체계(거리 + 시간)
+- 사진 화면: “Guess the Location” 버튼 클릭으로 지도 화면으로 이동.
+- 지도 화면: 마우스 드래그 회전, 휠 줌, 클릭으로 핀 배치.
+- 결과 화면: 총점과 세부 점수 확인 후 “Back to Home”으로 재시작.
 
-- 거리 점수: 최대 7,000점. 지구 최대 거리(πR, R≈6371km)를 기준으로 정답과의 거리 비율에 따라 선형으로 감점됩니다.
-- 시간 보너스: 최대 3,000점. 10초 이내는 3,000점, 10–180초 구간에서는 로그 스케일로 점차 감소, 180초 초과 시 0점.
-- 총점: 거리 점수 + 시간 보너스(최대 10,000점/라운드)
+## 점수 체계(정확한 규칙)
 
-자세한 계산 로직은 `src/utils/calculate.ts`에 구현되어 있습니다.
+- 거리 점수(최대 7,000점): 지구 최대 거리(πR, R=6371.0088km)를 기준으로 선형 감점
+  - 공식: `score_distance = max(0, 7000 * (1 - distance_km / (π * 6371.0088)))`
+- 시간 보너스(최대 3,000점): 10초 이내 3,000점, 10–180초 구간에서 로그 스케일로 감소, 180초 초과 0점
+  - 의사코드: `t < 10 → 3000`, `10 ≤ t ≤ 180 → 3000 * (1 - sqrt( log(1+0.001*(t-10)) / log(1+0.001*170) ))`, `t > 180 → 0`
+- 총점: `거리 점수 + 시간 보너스` (라운드 최대 10,000점)
 
-## 어떤 이점이 있나요?
+구현 참조: `src/utils/calculate.ts`
 
-- 수동적 관람을 능동적 발견으로 전환해 몰입을 높입니다.
-- 실제 우주 사진과 상호작용하며 지리/환경 감수성을 자연스럽게 확장합니다.
-- 아이부터 어른까지 모두 즐길 수 있는 난이도와 경쟁 요소로 재방문을 유도합니다.
-- NASA의 공개 ISS 데이터를 교육·엔터테인먼트 연결 고리로 재해석해, 우주에 대한 관심을 넓힙니다.
-
-## 의도된 임팩트
-
-- 우주비행사가 본 지구의 경이로움을 누구나 접근 가능하게 합니다.
-- “재미있게 놀다 보면 배움이 따라오는” 경험으로 과학 소양을 확장합니다.
-- 지구의 아름다움과 취약성에 대한 호기심과 책임감을 동시에 자극합니다.
-- 어른에게는 도전적 재미를, 아이들에게는 놀이를 통한 학습을 제공합니다.
-
-## 사용 기술(도구/언어/플랫폼)
-
-- React 19 + TypeScript: 현대적 UI 개발과 타입 안정성
-- Vite: 빠른 빌드/개발 서버
-- MapLibre GL JS: 3D 지구본 기반 인터랙티브 지도 시각화
-- Leaflet + React-Leaflet: 2D 지도 옵션(레거시/보조 용도)
-- Python: NASA 이미지/메타데이터 수집 및 전처리(오프라인 파이프라인)
-- Node.js & npm: 패키지 관리와 스크립트 실행
-- Git: 형상관리
-- Vercel: 클라우드 배포
-
-## 접근성과 사용자 고려 사항
-
-- 브라우저에서 바로 실행(설치 불필요)
-- 모바일/데스크톱 반응형 UI
-- 아이/초심자에게는 직관적인 조작, 숙련자에게는 시간 보너스로 도전욕구 제공
-- 실제 ISS 사진을 활용한 높은 교육적 가치와 시각적 몰입감
-
-## NASA 데이터 출처
-
-- Earth Observatory: `src/data/earth_observatory.json`에 사진 제목, 촬영 관련 좌표 문자열(우주선 나디르/사진 중심점)이 정리되어 있으며, 파서가 중심점 → 나디르 순으로 좌표를 사용합니다.
-- 이미지 자산: `public/iss_photos/*.JPG` (파일명은 이미지 ID와 일치)
-- 참조 이미지/자료(예시):
-  - Parmitano with camera in Cupola
-  - Cupola with Shutters Open
-  - ISS062-E-117852
-  - NASA Earth Observatory 기사 및 이미지 아카이브
-
-표시되는 모든 사진과 메타데이터는 NASA의 공개 자료를 바탕으로 하며, 본 프로젝트는 NASA의 후원·승인·추천을 의미하지 않습니다. NASA 소재는 일반적으로 퍼블릭 도메인이지만, 적절한 크레딧 표기가 필요할 수 있으며 NASA 인시그니아/로고 사용에는 제한이 있을 수 있습니다. 자세한 사항은 NASA Media Usage Guidelines를 참고하세요.
-
-## 설치 및 실행
+## 빠른 시작 🚀
 
 사전 요구사항
+- Node.js 18+, npm 10+
 
-- Node.js 18+
-- npm 10+
-
-설치
-
+설치/실행
 ```bash
 npm install --include=dev
-```
-
-개발 서버
-
-```bash
 npm run dev
-# 기본 포트: 5173 (Vite 기본값)
+# 기본 포트: 5173 (Vite)
 ```
 
 빌드/프리뷰
-
 ```bash
 npm run build
 npm run preview
 ```
 
-환경 변수
+## 사용 방법 🎮
+- 사진 화면: 충분히 관찰한 뒤 “Guess the Location” 클릭
+- 지도 화면: 드래그 회전, 휠 줌, 클릭으로 핀 배치
+- 점수 화면: 정답/추측 위치와 거리·보너스·총점 확인 후 다음 라운드
 
-- 기본 설정에서는 MapLibre 데모 스타일(`https://demotiles.maplibre.org/globe.json`)을 사용하므로 별도의 키가 필요 없습니다.
-- 자체 타일/스타일을 쓰고 싶다면 `src/components/MapAnswer.tsx` 및 `src/components/ScoreDisplay.tsx`의 `style` URL을 교체하세요.
+## 주요 특징 ✨
+- 진짜 ISS 사진 사용(오픈 데이터)📚
+- MapLibre GL JS 기반 3D 지구본 인터랙션 🌍
+- 반응형 UI, 빠른 로딩(Vite) ⚡
 
-## 사용 방법(조작)
+## 기술 스택 🔧
+- React 19 + TypeScript
+- Vite
+- MapLibre GL JS
+- Node.js, npm
+- Vercel(배포)
+- Python(외부 스크립트로 이미지/메타데이터 수집—리포지토리 내 스크립트는 포함되어 있지 않습니다)
 
-- 사진 화면: 사진을 관찰하고 “Guess the Location” 클릭
-- 지도 화면: 마우스 드래그로 회전, 휠로 줌, 클릭으로 핀 배치
-- 점수 화면: 정답/추측 위치, 거리, 거리 점수, 시간 보너스, 총점 확인 후 다음 라운드 진행
+## 데이터 출처 📦
+- NASA Earth Observatory 정리 데이터: `src/data/earth_observatory.json`
+- 이미지 자산: `public/iss_photos/*.JPG` (파일명=이미지 ID)
+- 참고 항목 예시: Parmitano with camera in Cupola, Cupola with Shutters Open, ISS062-E-117852 등
 
-## 폴더 구조(요약)
+표시되는 자료는 NASA 공개 자료를 바탕으로 하며, 본 프로젝트는 NASA의 후원·승인·추천을 의미하지 않습니다. NASA 로고/인시그니아 사용에는 별도 제한이 있을 수 있습니다(NASA Media Usage Guidelines 참고).
 
+## 프로젝트 구조 🗂️
 ```
 src/
 ├── App.tsx
-├── components/
-│   ├── Welcome.tsx          # 시작 화면
-│   ├── WindowSelector.tsx   # 창 선택 화면
-│   ├── PhotoDisplay.tsx     # 사진 표시
-│   ├── MapAnswer.tsx        # 3D 지구본에서 추측/핀 배치
-│   └── ScoreDisplay.tsx     # 정답/점수 피드백
-├── data/
-│   ├── earth_observatory.json  # NASA EO 정제 데이터
-│   └── QuestionUtil.ts         # 좌표 파싱/문항 로딩
-├── models/                   # 타입 정의(Question/UserAnswer 등)
-├── utils/calculate.ts        # 거리/시간 보너스/총점 계산
-├── styles/theme.ts           # 테마/공통 스타일
-└── index.css, main.tsx, ...
+├── components/ (Welcome, WindowSelector, PhotoDisplay, MapAnswer, ScoreDisplay)
+├── data/ (earth_observatory.json, QuestionUtil.ts)
+├── models/ (타입 정의)
+├── utils/calculate.ts (거리/시간/총점 계산)
+└── styles/theme.ts
 
 public/
-├── iss_photos/               # ISS 사진(.JPG)
-└── images/ui/                # UI 이미지 자산
+├── iss_photos/  # ISS 사진
+└── images/ui/   # UI 자산
 ```
 
-## 점수 계산 세부
+## 배포 🌐
+- Vercel — https://cupola-quest.vercel.app
 
-- 거리(하버사인): 지구 평균 반지름 6371.0088km 기준 대권거리 계산
-- 거리 점수: `max(0, 7000 * (1 - d / (πR)))`
-- 시간 보너스: `t<10s → 3000`, `10s≤t≤180s → 로그 스케일로 0까지 감소`, `t>180s → 0`
-- 총점: 거리 점수 + 시간 보너스
-
-구현은 `src/utils/calculate.ts`를 참고하세요.
-
-## 배포
-
-- 플랫폼: Vercel
-- 프로덕션 URL: https://cupola-quest.vercel.app
-
-## 로드맵(예시)
-
-- 데일리 챌린지/라운드 묶음 모드
-- 글로벌 리더보드 및 공유 카드
-- 힌트/난이도 곡선(예: 대륙/기후대 힌트)
-- 오프라인/저대역폭 모드(썸네일·지연 로드)
-- 추가 데이터 소스(야간사진, 기상 이벤트 등)
-
-## 기여 및 문의
-
-- 이슈/제안은 깃허브 이슈로 등록해주세요.
-- 데이터/이미지 정합성 관련 제보도 환영합니다.
+## 로드맵(간단) 🗺️
+- 데일리/라운드 묶음 모드, 공유 카드/리더보드
+- 힌트/난이도 개선(예: 대륙·기후대 힌트), 저대역폭 대응
 
 ---
 
