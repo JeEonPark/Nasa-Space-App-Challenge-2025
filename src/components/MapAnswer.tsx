@@ -188,7 +188,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 padding: '20px',
                 boxSizing: 'border-box',
                 overflow: isMobile ? 'auto' : 'visible',
-                paddingBottom: isMobile ? '120px' : '20px'
+                paddingBottom: isMobile ? 'calc(env(safe-area-inset-bottom, 0px) + 80px)' : '20px'
             }}>
 
                 {/* タイトル */}
@@ -213,8 +213,8 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: isMobile ? 'auto' : undefined,
-                    flex: isMobile ? undefined : 1,
+                    flex: 1,
+                    overflow: 'visible',
                     padding: isMobile ? '0 10px' : '0',
                     boxSizing: 'border-box',
                     minHeight: 0
@@ -563,14 +563,13 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
 
                         {/* 2つ目の枠: 座標情報とSubmitボタン */}
                         <div style={{
-                            border: '1px solid rgba(184, 197, 214, 0.3)',
+                            border: 'none',
                             borderRadius: '4px',
                             background: 'rgba(26, 31, 58, 0.6)',
                             padding: '20px',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '15px',
-                            marginBottom: isMobile ? '400px' : '0'
+                            gap: '15px'
                         }}>
                             {/* 座標情報とSubmitボタンのコンテナ */}
                             <div style={{
@@ -643,7 +642,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         </div>
                     </div>
                 </div>
-                {isMobile && (<div style={{ height: '40px', flexShrink: 0 }} />)}
+                {isMobile && (<div style={{ height: '0px', flexShrink: 0 }} />)}
             </div>
         </>
     );
