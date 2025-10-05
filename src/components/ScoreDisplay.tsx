@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import type { Question, UserAnswer } from '../models';
@@ -46,6 +46,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
     const map = useRef<maplibregl.Map | null>(null);
     const correctMarker = useRef<maplibregl.Marker | null>(null);
     const userMarker = useRef<maplibregl.Marker | null>(null);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
 
     const distance = calculateDistance(question.lat, question.lon, userAnswer.lat, userAnswer.lon);
     const distanceScore = calculateScore(distance);
@@ -125,6 +126,15 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
         };
     }, [question.lat, question.lon, userAnswer.lat, userAnswer.lon]);
 
+    // Screen resize listener
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     return (
         <>
             <div style={{
@@ -132,12 +142,13 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                 height: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: isMobile ? 'flex-start' : 'center',
                 alignItems: 'center',
                 position: 'relative',
                 background: 'rgba(26, 31, 58, 0.4)',
                 gap: '20px',
-                padding: '20px'
+                padding: '20px',
+                overflow: isMobile ? 'auto' : 'visible'
             }}>
                 {/* タイトル */}
                 <h1 style={{
@@ -153,23 +164,23 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                     CUPOLA QUEST
                 </h1>
 
-                {/* メインコンテンツエリア (横並び) */}
+                {/* メインコンテンツエリア */}
                 <div style={{
                     display: 'flex',
-                    flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+                    flexDirection: isMobile ? 'column' : 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: '80vh'
+                    height: isMobile ? 'auto' : '80vh'
                 }}>
                     {/* 左側: 3D地球儀地図 */}
                     <div style={{
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: window.innerWidth < 768 ? '50vh' : '80vh',
-                        width: window.innerWidth < 768 ? '100%' : '55%',
+                        height: isMobile ? '50vh' : '80vh',
+                        width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>
                         <div
@@ -235,8 +246,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
 
                     {/* 右側: 情報表示エリア */}
                     <div style={{
-                        width: window.innerWidth < 768 ? '100%' : '35%',
-                        height: window.innerWidth < 768 ? 'auto' : '80vh',
+                        width: isMobile ? '100%' : '35%',
+                        height: isMobile ? 'auto' : '80vh',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px'
