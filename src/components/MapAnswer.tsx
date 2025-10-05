@@ -278,7 +278,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: isMobile ? '40vh' : '100%',
+                        height: isMobile ? '50vh' : '100%',
                         width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>
