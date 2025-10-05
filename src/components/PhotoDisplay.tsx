@@ -66,9 +66,9 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
             }}>
                 {/* 画像表示エリア */}
                 <div style={{
-                    border: '1px solid rgba(184, 197, 214, 0.3)',
+                    border: imageLoaded ? '1px solid rgba(184, 197, 214, 0.3)' : 'none',
                     padding: '30px',
-                    background: 'rgba(10, 14, 39, 0.5)',
+                    background: imageLoaded ? 'rgba(10, 14, 39, 0.5)' : 'transparent',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
@@ -102,9 +102,7 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                             minHeight: '100%',
                             objectFit: 'contain',
                             borderRadius: '4px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-                            opacity: imageLoaded ? 1 : 0,
-                            transition: 'opacity 0.3s ease-in-out'
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
                         }}
                     />
                     {/* <p style={{
