@@ -174,12 +174,48 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                     width: '100%',
                     height: isMobile ? 'auto' : '80vh'
                 }}>
+                    {/* モバイル版: 画像領域を先に表示 */}
+                    {isMobile && (
+                        <div style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '15px'
+                        }}>
+                            {/* 画像表示エリア */}
+                            <div style={{
+                                border: '1px solid rgba(184, 197, 214, 0.3)',
+                                borderRadius: '4px',
+                                background: 'transparent',
+                                padding: '20px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '15px',
+                                height: '220px'
+                            }}>
+                                <img
+                                    src={`/iss_photos/${question.file}`}
+                                    alt={question.title}
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '180px',
+                                        minHeight: '180px',
+                                        objectFit: 'contain',
+                                        borderRadius: '4px',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    )}
+
                     {/* 左側: 3D地球儀地図 */}
                     <div style={{
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: isMobile ? '50vh' : '80vh',
+                        height: isMobile ? '40vh' : '80vh',
                         width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>
@@ -264,42 +300,44 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             gap: '15px',
                             flex: '1'
                         }}>
-                            {/* 写真表示エリア */}
-                            <div style={{
-                                border: '1px solid rgba(184, 197, 214, 0.2)',
-                                borderRadius: '4px',
-                                height: '50%',
-                                background: 'rgba(42, 59, 90, 0.3)',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '10px',
-                                overflow: 'hidden'
-                            }}>
-                                <img
-                                    src={`/iss_photos/${question.file}`}
-                                    alt={question.title}
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '90%',
-                                        minHeight: '80%',
-                                        objectFit: 'contain',
-                                        borderRadius: '4px',
-                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                                    }}
-                                />
-                                <p style={{
-                                    margin: '8px 0 0 0',
-                                    color: 'var(--star-white)',
-                                    fontSize: '0.8em',
-                                    textAlign: 'center',
-                                    opacity: 0.9,
-                                    lineHeight: '1.2'
+                            {/* 写真表示エリア（Web版のみ） */}
+                            {!isMobile && (
+                                <div style={{
+                                    border: '1px solid rgba(184, 197, 214, 0.2)',
+                                    borderRadius: '4px',
+                                    height: '50%',
+                                    background: 'rgba(42, 59, 90, 0.3)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '10px',
+                                    overflow: 'hidden'
                                 }}>
-                                    {question.title}
-                                </p>
-                            </div>
+                                    <img
+                                        src={`/iss_photos/${question.file}`}
+                                        alt={question.title}
+                                        style={{
+                                            maxWidth: '100%',
+                                            maxHeight: '90%',
+                                            minHeight: '80%',
+                                            objectFit: 'contain',
+                                            borderRadius: '4px',
+                                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                        }}
+                                    />
+                                    <p style={{
+                                        margin: '8px 0 0 0',
+                                        color: 'var(--star-white)',
+                                        fontSize: '0.8em',
+                                        textAlign: 'center',
+                                        opacity: 0.9,
+                                        lineHeight: '1.2'
+                                    }}>
+                                        {question.title}
+                                    </p>
+                                </div>
+                            )}
 
                             <h3 style={{
                                 fontSize: '1.4em',
