@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import type { Question } from '../models';
 
 interface PhotoDisplayProps {
@@ -6,6 +7,28 @@ interface PhotoDisplayProps {
 }
 
 export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayProps) {
+    const [imageLoaded, setImageLoaded] = useState(false);
+    const [loadingDots, setLoadingDots] = useState('');
+
+    // ローディングアニメーション
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setLoadingDots(prev => {
+                if (prev === '') return '.';
+                if (prev === '.') return '..';
+                if (prev === '..') return '...';
+                return '';
+            });
+        }, 500); // 500msごとに更新
+
+        return () => clearInterval(interval);
+    }, []);
+
+    // 画像読み込み完了時のハンドラー
+    const handleImageLoad = () => {
+        setImageLoaded(true);
+    };
+
     return (
         <div style={{
             width: '100%',
@@ -51,18 +74,37 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '4px',
-                    height: '90%'
+                    height: '90%',
+                    position: 'relative'
                 }}>
+                    {!imageLoaded && (
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            color: 'var(--star-white)',
+                            fontSize: '1.5em',
+                            fontWeight: '600',
+                            textAlign: 'center',
+                            zIndex: 10
+                        }}>
+                            Loading{loadingDots}
+                        </div>
+                    )}
                     <img
                         src={`/iss_photos/${question.file}`}
                         alt={question.title}
+                        onLoad={handleImageLoad}
                         style={{
                             maxWidth: '100%',
                             maxHeight: '100%',
                             minHeight: '100%',
                             objectFit: 'contain',
                             borderRadius: '4px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                            opacity: imageLoaded ? 1 : 0,
+                            transition: 'opacity 0.3s ease-in-out'
                         }}
                     />
                     {/* <p style={{
