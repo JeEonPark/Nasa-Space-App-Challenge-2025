@@ -1,5 +1,3 @@
-import { theme } from '../styles/theme';
-
 interface WindowSelectorProps {
     onWindowClick: () => void;
 }

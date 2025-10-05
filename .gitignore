@@ -25,3 +25,4 @@ dist-ssr
 
 iss_photos
 __pycache__/
+.vercel
