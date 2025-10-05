@@ -386,18 +386,21 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
 
                         {/* 2つ目の枠: 次の問題ボタン */}
                         <div style={{
-                            border: '1px solid rgba(184, 197, 214, 0.3)',
                             borderRadius: '4px',
                             background: 'rgba(26, 31, 58, 0.6)',
                             padding: '20px',
                             display: 'flex',
                             flexDirection: 'column',
                             gap: '15px',
-                            height: '15%'
+                            height: '15%',
+                            alignItems: 'center'
                         }}>
                             <button
                                 onClick={onNextQuestion}
-                                style={commonStyles.button}
+                                style={{
+                                    ...commonStyles.button,
+                                    width: '200px'
+                                }}
                             >
                                 Back to Home
                             </button>

@@ -298,7 +298,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
                                     }}
                                 />
-                                <p style={{
+                                {/* <p style={{
                                     margin: '8px 0 0 0',
                                     color: 'var(--star-white)',
                                     fontSize: '0.8em',
@@ -307,7 +307,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                     lineHeight: '1.2'
                                 }}>
                                     {question.title}
-                                </p>
+                                </p> */}
                             </div>
 
                         </div>
