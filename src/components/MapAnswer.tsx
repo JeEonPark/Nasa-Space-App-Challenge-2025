@@ -26,6 +26,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
     const [currentTimeBonus, setCurrentTimeBonus] = useState<number>(3000);
     const [elapsedTime, setElapsedTime] = useState<number>(0);
+    const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map | null>(null);
     const marker = useRef<maplibregl.Marker | null>(null);
@@ -67,6 +68,16 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 map.current = null;
             }
         };
+    }, []);
+
+    // 画面サイズの変化を監視
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     // リアルタイムで時間ボーナスを更新
@@ -115,12 +126,13 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 height: '100vh',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'center',
+                justifyContent: isMobile ? 'flex-start' : 'center',
                 alignItems: 'center',
                 position: 'relative',
                 background: 'rgba(26, 31, 58, 0.4)',
                 gap: '20px',
-                padding: '20px'
+                padding: '20px',
+                overflow: isMobile ? 'auto' : 'visible'
             }}>
 
                 {/* タイトル */}
@@ -140,20 +152,110 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 {/* メインコンテンツエリア */}
                 <div style={{
                     display: 'flex',
-                    flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-                    justifyContent: 'center',
+                    flexDirection: isMobile ? 'column' : 'row',
+                    justifyContent: isMobile ? 'flex-start' : 'center',
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: '80%'
+                    height: isMobile ? 'auto' : '80%',
+                    padding: isMobile ? '0 10px' : '0'
                 }}>
+                    {/* モバイル版: How to Playと画像表示を先に表示 */}
+                    {isMobile && (
+                        <div style={{
+                            width: '100%',
+                            height: 'auto',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '15px'
+                        }}>
+                            {/* 操作説明 */}
+                            <div style={{
+                                background: 'rgba(42, 59, 90, 0.4)',
+                                padding: '10px',
+                                borderRadius: '4px',
+                                border: '1px solid rgba(184, 197, 214, 0.2)',
+                                overflow: 'auto'
+                            }}>
+                                <h4 style={{
+                                    margin: '0 0 10px 0',
+                                    color: 'var(--star-white)',
+                                    fontSize: '1em'
+                                }}>
+                                    How to Play
+                                </h4>
+                                <p style={{
+                                    margin: '0 0 8px 0',
+                                    fontSize: '0.8em',
+                                    color: 'var(--star-silver)',
+                                    lineHeight: '1.4'
+                                }}>
+                                    • Click the map to place a marker
+                                </p>
+                                <p style={{
+                                    margin: '0 0 8px 0',
+                                    fontSize: '0.8em',
+                                    color: 'var(--star-silver)',
+                                    lineHeight: '1.4'
+                                }}>
+                                    • Mouse drag: Rotate
+                                </p>
+                                <p style={{
+                                    margin: '0',
+                                    fontSize: '0.8em',
+                                    color: 'var(--star-silver)',
+                                    lineHeight: '1.4'
+                                }}>
+                                    • Mouse wheel: Zoom
+                                </p>
+                            </div>
+
+                            {/* 写真表示エリア */}
+                            <div style={{
+                                border: '1px solid rgba(184, 197, 214, 0.2)',
+                                borderRadius: '4px',
+                                height: '200px',
+                                background: 'rgba(42, 59, 90, 0.3)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '10px',
+                                overflow: 'hidden'
+                            }}>
+                                <img
+                                    src={`/iss_photos/${question.file}`}
+                                    alt={question.title}
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '180px',
+                                        minHeight: '180px',
+                                        objectFit: 'contain',
+                                        borderRadius: '4px',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                    }}
+                                />
+                                <p style={{
+                                    margin: '8px 0 0 0',
+                                    color: 'var(--star-white)',
+                                    fontSize: '0.8em',
+                                    textAlign: 'center',
+                                    opacity: 0.9,
+                                    lineHeight: '1.2'
+                                }}>
+                                    {question.title}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
                     {/* 左側: 3D地球儀地図 */}
                     <div style={{
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: window.innerWidth < 768 ? '60vh' : '80vh',
-                        width: window.innerWidth < 768 ? '100%' : '55%',
+                        height: isMobile ? '60vh' : '80vh',
+                        width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>
                         <div
@@ -295,93 +397,94 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
 
                     {/* 右側: 情報表示エリア */}
                     <div style={{
-                        width: window.innerWidth < 768 ? '100%' : '35%',
-                        height: window.innerWidth < 768 ? 'auto' : '80vh',
-                        maxHeight: window.innerWidth < 768 ? '40vh' : 'none',
-                        overflow: window.innerWidth < 768 ? 'auto' : 'visible',
+                        width: isMobile ? '100%' : '35%',
+                        height: isMobile ? 'auto' : '80vh',
+                        maxHeight: isMobile ? '40vh' : 'none',
+                        overflow: isMobile ? 'auto' : 'visible',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px'
                     }}>
-                        {/* 1つ目の枠: 操作説明と写真表示 */}
-                        <div style={{
-                            border: '1px solid rgba(184, 197, 214, 0.3)',
-                            borderRadius: '4px',
-                            background: 'rgba(26, 31, 58, 0.6)',
-                            padding: '20px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '15px',
-                            flex: '1'
-                        }}>
-                            {/* 操作説明 */}
+                        {/* 1つ目の枠: 操作説明と写真表示（Web版のみ表示） */}
+                        {!isMobile && (
                             <div style={{
-                                background: 'rgba(42, 59, 90, 0.4)',
-                                padding: window.innerWidth < 768 ? '10px' : '15px',
+                                border: '1px solid rgba(184, 197, 214, 0.3)',
                                 borderRadius: '4px',
-                                border: '1px solid rgba(184, 197, 214, 0.2)',
-                                height: '24%',
-                                overflow: 'auto'
-                            }}>
-                                <h4 style={{
-                                    margin: '0 0 10px 0',
-                                    color: 'var(--star-white)',
-                                    fontSize: '1em'
-                                }}>
-                                    How to Play
-                                </h4>
-                                <p style={{
-                                    margin: '0 0 8px 0',
-                                    fontSize: '0.8em',
-                                    color: 'var(--star-silver)',
-                                    lineHeight: '1.4'
-                                }}>
-                                    • Click the map to place a marker
-                                </p>
-                                <p style={{
-                                    margin: '0 0 8px 0',
-                                    fontSize: '0.8em',
-                                    color: 'var(--star-silver)',
-                                    lineHeight: '1.4'
-                                }}>
-                                    • Mouse drag: Rotate
-                                </p>
-                                <p style={{
-                                    margin: '0',
-                                    fontSize: '0.8em',
-                                    color: 'var(--star-silver)',
-                                    lineHeight: '1.4'
-                                }}>
-                                    • Mouse wheel: Zoom
-                                </p>
-                            </div>
-
-                            {/* 写真表示エリア */}
-                            <div style={{
-                                border: '1px solid rgba(184, 197, 214, 0.2)',
-                                borderRadius: '4px',
-                                height: '76%',
-                                background: 'rgba(42, 59, 90, 0.3)',
+                                background: 'rgba(26, 31, 58, 0.6)',
+                                padding: '20px',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                padding: '10px',
-                                overflow: 'hidden'
+                                gap: '15px',
+                                flex: '1'
                             }}>
-                                <img
-                                    src={`/iss_photos/${question.file}`}
-                                    alt={question.title}
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '90%',
-                                        minHeight: '80%',
-                                        objectFit: 'contain',
-                                        borderRadius: '4px',
-                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                                    }}
-                                />
-                                {/* <p style={{
+                                {/* 操作説明 */}
+                                <div style={{
+                                    background: 'rgba(42, 59, 90, 0.4)',
+                                    padding: isMobile ? '10px' : '15px',
+                                    borderRadius: '4px',
+                                    border: '1px solid rgba(184, 197, 214, 0.2)',
+                                    height: '24%',
+                                    overflow: 'auto'
+                                }}>
+                                    <h4 style={{
+                                        margin: '0 0 10px 0',
+                                        color: 'var(--star-white)',
+                                        fontSize: '1em'
+                                    }}>
+                                        How to Play
+                                    </h4>
+                                    <p style={{
+                                        margin: '0 0 8px 0',
+                                        fontSize: '0.8em',
+                                        color: 'var(--star-silver)',
+                                        lineHeight: '1.4'
+                                    }}>
+                                        • Click the map to place a marker
+                                    </p>
+                                    <p style={{
+                                        margin: '0 0 8px 0',
+                                        fontSize: '0.8em',
+                                        color: 'var(--star-silver)',
+                                        lineHeight: '1.4'
+                                    }}>
+                                        • Mouse drag: Rotate
+                                    </p>
+                                    <p style={{
+                                        margin: '0',
+                                        fontSize: '0.8em',
+                                        color: 'var(--star-silver)',
+                                        lineHeight: '1.4'
+                                    }}>
+                                        • Mouse wheel: Zoom
+                                    </p>
+                                </div>
+
+                                {/* 写真表示エリア */}
+                                <div style={{
+                                    border: '1px solid rgba(184, 197, 214, 0.2)',
+                                    borderRadius: '4px',
+                                    height: '76%',
+                                    background: 'rgba(42, 59, 90, 0.3)',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    padding: '10px',
+                                    overflow: 'hidden'
+                                }}>
+                                    <img
+                                        src={`/iss_photos/${question.file}`}
+                                        alt={question.title}
+                                        style={{
+                                            maxWidth: '100%',
+                                            maxHeight: '90%',
+                                            minHeight: '80%',
+                                            objectFit: 'contain',
+                                            borderRadius: '4px',
+                                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                        }}
+                                    />
+                                    {/* <p style={{
                                     margin: '8px 0 0 0',
                                     color: 'var(--star-white)',
                                     fontSize: '0.8em',
@@ -391,9 +494,10 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                 }}>
                                     {question.title}
                                 </p> */}
-                            </div>
+                                </div>
 
-                        </div>
+                            </div>
+                        )}
 
                         {/* 2つ目の枠: 座標情報とSubmitボタン */}
                         <div style={{
