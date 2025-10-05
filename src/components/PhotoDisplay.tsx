@@ -9,8 +9,9 @@ interface PhotoDisplayProps {
 export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [loadingDots, setLoadingDots] = useState('');
+    const [imageSrc, setImageSrc] = useState('');
 
-    // ローディングアニメーション
+    // Loading animation
     useEffect(() => {
         const interval = setInterval(() => {
             setLoadingDots(prev => {
@@ -19,15 +20,39 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                 if (prev === '..') return '...';
                 return '';
             });
-        }, 500); // 500msごとに更新
+        }, 500);
 
         return () => clearInterval(interval);
     }, []);
 
-    // 画像読み込み完了時のハンドラー
-    const handleImageLoad = () => {
-        setImageLoaded(true);
-    };
+    // Load and rotate image if needed
+    useEffect(() => {
+        setImageLoaded(false);
+        const img = new Image();
+        img.src = `/iss_photos/${question.file}`;
+
+        img.onload = () => {
+            const isVertical = img.height > img.width;
+
+            if (isVertical) {
+                // Rotate the image using canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = img.height;
+                canvas.height = img.width;
+                const ctx = canvas.getContext('2d');
+
+                if (ctx) {
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    ctx.rotate(90 * Math.PI / 180);
+                    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+                    setImageSrc(canvas.toDataURL('image/jpeg', 0.95));
+                }
+            } else {
+                setImageSrc(img.src);
+            }
+            setImageLoaded(true);
+        };
+    }, [question.file]);
 
     return (
         <div style={{
@@ -65,56 +90,59 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                 height: '80%'
             }}>
                 {/* 画像表示エリア */}
-                <div style={{
-                    border: imageLoaded ? '1px solid rgba(184, 197, 214, 0.3)' : 'none',
-                    padding: '30px',
-                    background: imageLoaded ? 'rgba(10, 14, 39, 0.5)' : 'transparent',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: '4px',
-                    height: '90%',
-                    position: 'relative'
-                }}>
+                <>
                     {!imageLoaded && (
                         <div style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            color: 'var(--star-white)',
-                            fontSize: '1.5em',
-                            fontWeight: '600',
-                            textAlign: 'center',
-                            zIndex: 10
+                            position: 'relative',
+                            width: '100%',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
                         }}>
-                            Loading{loadingDots}
+                            <div style={{
+                                color: 'var(--star-white)',
+                                fontSize: '1.5em',
+                                fontWeight: '600',
+                                textAlign: 'center',
+                                zIndex: 10
+                            }}>
+                                Loading{loadingDots}
+                            </div>
                         </div>
                     )}
-                    <img
-                        src={`/iss_photos/${question.file}`}
-                        alt={question.title}
-                        onLoad={handleImageLoad}
-                        style={{
-                            maxWidth: '100%',
-                            maxHeight: '100%',
-                            minHeight: '100%',
-                            objectFit: 'contain',
+                    {imageSrc && (
+                        <div style={{
+                            border: '1px solid rgba(184, 197, 214, 0.3)',
+                            padding: '30px',
+                            background: 'rgba(10, 14, 39, 0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             borderRadius: '4px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-                        }}
-                    />
-                    {/* <p style={{
-                        fontSize: '1.1em',
-                        margin: '15px 0 0 0',
-                        color: 'var(--star-white)',
-                        textAlign: 'center',
-                        fontWeight: '500'
-                    }}>
-                        {question.title}
-                    </p> */}
-                </div>
+                            position: 'relative',
+                            width: 'fit-content',
+                            height: 'fit-content',
+                            maxWidth: '100%',
+                            maxHeight: '100%'
+                        }}>
+                            <img
+                                src={imageSrc}
+                                alt={question.title}
+                                style={{
+                                    maxWidth: 'calc(100vw - 100px)',
+                                    maxHeight: 'calc(80vh - 200px)',
+                                    minWidth: 'calc(100vw - 100px)',
+                                    minHeight: 'calc(80vh - 200px)',
+                                    objectFit: 'contain',
+                                    display: 'block',
+                                    borderRadius: '4px',
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+                                }}
+                            />
+                        </div>
+                    )}
+                </>
 
                 {/* ボタンエリア */}
                 <div style={{
