@@ -12,7 +12,8 @@ function App() {
     startGame,
     showMap,
     submitAnswer,
-    nextQuestion
+    nextQuestion,
+    gameStartTime
   } = useGameState();
 
   return (
@@ -66,10 +67,11 @@ function App() {
         />
       )}
 
-      {gameState.gameStage === 'answeringOnMap' && gameState.currentQuestion && (
+      {gameState.gameStage === 'answeringOnMap' && gameState.currentQuestion && gameStartTime && (
         <MapAnswer
           question={gameState.currentQuestion}
           onAnswerSubmit={submitAnswer}
+          gameStartTime={gameStartTime}
         />
       )}
 

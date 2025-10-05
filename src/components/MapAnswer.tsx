@@ -9,6 +9,7 @@ import { calculateTimeBonus } from '../utils/calculate';
 interface MapAnswerProps {
     question: Question;
     onAnswerSubmit: (answer: UserAnswer) => void;
+    gameStartTime: number;
 }
 
 // デフォルトマーカー作成関数
@@ -20,7 +21,7 @@ const createDefaultMarker = (map: maplibregl.Map, lat: number, lng: number) => {
         .addTo(map);
 };
 
-export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) {
+export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: MapAnswerProps) {
     const [selectedLat, setSelectedLat] = useState<number | null>(null);
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
     const [currentTimeBonus, setCurrentTimeBonus] = useState<number>(3000);
@@ -28,7 +29,6 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map | null>(null);
     const marker = useRef<maplibregl.Marker | null>(null);
-    const gameStartTime = useRef<number>(Date.now());
 
     // 3D地球儀の初期化
     useEffect(() => {
@@ -73,7 +73,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
     useEffect(() => {
         const interval = setInterval(() => {
             const now = Date.now();
-            const elapsed = (now - gameStartTime.current) / 1000; // 秒単位
+            const elapsed = (now - gameStartTime) / 1000; // 秒単位
             setElapsedTime(elapsed);
 
             const timeBonus = calculateTimeBonus(elapsed);
@@ -81,7 +81,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
         }, 100); // 100msごとに更新（滑らかな表示）
 
         return () => clearInterval(interval);
-    }, []);
+    }, [gameStartTime]);
 
     const handleSubmit = () => {
         if (selectedLat !== null && selectedLon !== null) {

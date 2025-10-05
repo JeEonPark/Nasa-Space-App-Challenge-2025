@@ -88,6 +88,7 @@ export function useGameState() {
         startGame,
         showMap,
         submitAnswer,
-        nextQuestion
+        nextQuestion,
+        gameStartTime
     };
 }
