@@ -142,14 +142,14 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: '70vh'
+                    height: '80vh'
                 }}>
                     {/* 左側: 3D地球儀地図 */}
                     <div style={{
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: '70vh',
+                        height: '80vh',
                         width: '55%',
                         position: 'relative'
                     }}>
@@ -217,7 +217,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                     {/* 右側: 情報表示エリア */}
                     <div style={{
                         width: '35%',
-                        height: '70vh',
+                        height: '80vh',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px'
@@ -393,7 +393,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                 onClick={onNextQuestion}
                                 style={commonStyles.button}
                             >
-                                Next Question
+                                Back to Home
                             </button>
                         </div>
                     </div>

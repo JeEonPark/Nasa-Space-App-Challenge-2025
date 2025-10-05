@@ -73,15 +73,12 @@ export function useGameState() {
     };
 
     const nextQuestion = () => {
-        const randomQuestion = getRandomQuestion();
-        const startTime = Date.now();
-        setGameStartTime(startTime);
         setGameState({
-            currentQuestion: randomQuestion,
+            currentQuestion: null,
             userAnswer: null,
             score: null,
             answerTime: null,
-            gameStage: 'viewingPhoto'
+            gameStage: 'waitingToStart'
         });
     };
 
