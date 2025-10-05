@@ -76,6 +76,19 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
         }
     };
 
+    // ズームコントロール関数
+    const handleZoomIn = () => {
+        if (map.current) {
+            map.current.zoomIn();
+        }
+    };
+
+    const handleZoomOut = () => {
+        if (map.current) {
+            map.current.zoomOut();
+        }
+    };
+
     return (
 
         <>
@@ -133,6 +146,71 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                 borderRadius: '4px'
                             }}
                         />
+                        {/* ズームコントロールボタン */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '5px',
+                            zIndex: 1000
+                        }}>
+                            <button
+                                onClick={handleZoomIn}
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    background: 'rgba(26, 31, 58, 0.8)',
+                                    border: '1px solid rgba(184, 197, 214, 0.3)',
+                                    borderRadius: '4px',
+                                    color: 'var(--star-white)',
+                                    fontSize: '18px',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+                                    transition: 'all 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(26, 31, 58, 0.9)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'rgba(26, 31, 58, 0.8)';
+                                }}
+                            >
+                                +
+                            </button>
+                            <button
+                                onClick={handleZoomOut}
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    background: 'rgba(26, 31, 58, 0.8)',
+                                    border: '1px solid rgba(184, 197, 214, 0.3)',
+                                    borderRadius: '4px',
+                                    color: 'var(--star-white)',
+                                    fontSize: '18px',
+                                    fontWeight: 'bold',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
+                                    transition: 'all 0.2s ease'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(26, 31, 58, 0.9)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'rgba(26, 31, 58, 0.8)';
+                                }}
+                            >
+                                −
+                            </button>
+                        </div>
                     </div>
 
                     {/* 右側: 情報表示エリア */}
