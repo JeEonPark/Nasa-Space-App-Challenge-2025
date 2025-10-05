@@ -230,6 +230,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             padding: '20px',
                             display: 'flex',
                             flexDirection: 'column',
+                            height: '85%',
                             gap: '15px',
                             flex: '1'
                         }}>
@@ -237,6 +238,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             <div style={{
                                 border: '1px solid rgba(184, 197, 214, 0.2)',
                                 borderRadius: '4px',
+                                height: '50%',
                                 background: 'rgba(42, 59, 90, 0.3)',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -250,7 +252,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                     alt={question.title}
                                     style={{
                                         maxWidth: '100%',
-                                        maxHeight: '200px',
+                                        maxHeight: '90%',
+                                        minHeight: '80%',
                                         objectFit: 'contain',
                                         borderRadius: '4px',
                                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
@@ -270,9 +273,9 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
 
                             <h3 style={{
                                 fontSize: '1.4em',
-                                margin: '0 0 -7px 0',
                                 color: 'var(--star-white)',
-                                textAlign: 'center'
+                                textAlign: 'center',
+                                flexShrink: 0,
                             }}>
                                 Score Breakdown
                             </h3>
@@ -280,7 +283,9 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             <div style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: '15px'
+                                gap: '15px',
+                                flex: '1',
+                                justifyContent: 'center',
                             }}>
                                 <div style={{
                                     textAlign: 'center',
@@ -387,7 +392,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             padding: '20px',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '15px'
+                            gap: '15px',
+                            height: '15%'
                         }}>
                             <button
                                 onClick={onNextQuestion}
