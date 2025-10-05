@@ -10,6 +10,13 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
     const [imageLoaded, setImageLoaded] = useState(false);
     const [loadingDots, setLoadingDots] = useState('');
     const [imageSrc, setImageSrc] = useState('');
+    const [isMobile, setIsMobile] = useState<boolean>(typeof window !== 'undefined' ? window.innerWidth < 768 : false);
+
+    useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 768);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     // Loading animation
     useEffect(() => {
@@ -113,8 +120,8 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                     )}
                     {imageSrc && (
                         <div style={{
-                            border: '1px solid rgba(184, 197, 214, 0.3)',
-                            padding: '30px',
+                            border: isMobile ? 'none' : '1px solid rgba(184, 197, 214, 0.3)',
+                            padding: isMobile ? '0' : '30px',
                             background: 'transparent',
                             display: 'flex',
                             alignItems: 'center',
@@ -131,9 +138,9 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                                 alt={question.title}
                                 style={{
                                     maxWidth: 'calc(100vw - 100px)',
-                                    maxHeight: 'calc(80vh - 200px)',
+                                    maxHeight: isMobile ? '50vh' : 'calc(80vh - 200px)',
                                     minWidth: 'calc(100vw - 100px)',
-                                    minHeight: 'calc(80vh - 200px)',
+                                    minHeight: isMobile ? '40vh' : 'calc(80vh - 200px)',
                                     objectFit: 'contain',
                                     display: 'block',
                                     borderRadius: '4px',
