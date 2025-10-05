@@ -148,6 +148,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                 background: 'rgba(26, 31, 58, 0.4)',
                 gap: '20px',
                 padding: '20px',
+                boxSizing: 'border-box',
                 overflow: isMobile ? 'auto' : 'visible'
             }}>
                 {/* タイトル */}
@@ -172,7 +173,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: isMobile ? 'auto' : '80vh'
+                    height: isMobile ? 'auto' : undefined,
+                    flex: isMobile ? undefined : 1
                 }}>
                     {/* モバイル版: 画像領域を先に表示 */}
                     {isMobile && (
@@ -215,7 +217,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: isMobile ? '40vh' : '80vh',
+                        height: isMobile ? '40vh' : '100%',
                         width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>

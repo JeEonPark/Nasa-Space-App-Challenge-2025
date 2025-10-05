@@ -132,6 +132,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 background: 'rgba(26, 31, 58, 0.4)',
                 gap: '20px',
                 padding: '20px',
+                boxSizing: 'border-box',
                 overflow: isMobile ? 'auto' : 'visible'
             }}>
 
@@ -157,7 +158,8 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: isMobile ? 'auto' : '80%',
+                    height: isMobile ? 'auto' : undefined,
+                    flex: isMobile ? undefined : 1,
                     padding: isMobile ? '0 10px' : '0'
                 }}>
                     {/* モバイル版: How to Playと画像表示を先に表示 */}
@@ -244,7 +246,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: isMobile ? '40vh' : '80vh',
+                        height: isMobile ? '40vh' : '100%',
                         width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>
