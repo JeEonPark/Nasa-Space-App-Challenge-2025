@@ -420,7 +420,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                     {/* 右側: 情報表示エリア */}
                     <div style={{
                         width: isMobile ? '100%' : '35%',
-                        height: isMobile ? 'auto' : '80vh',
+                        height: isMobile ? 'auto' : '100%',
                         maxHeight: isMobile ? '40vh' : 'none',
                         overflow: isMobile ? 'auto' : 'visible',
                         display: 'flex',
@@ -500,8 +500,9 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                             alt={question.title}
                                             style={{
                                                 maxWidth: '100%',
-                                                maxHeight: '90%',
-                                                minHeight: '80%',
+                                                maxHeight: '100%',
+                                                width: 'auto',
+                                                height: 'auto',
                                                 objectFit: 'contain',
                                                 borderRadius: '4px',
                                                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
