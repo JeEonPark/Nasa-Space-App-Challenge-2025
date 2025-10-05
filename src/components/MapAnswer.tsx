@@ -110,7 +110,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                     fontSize: 'clamp(2em, 5vw, 4em)',
                     fontWeight: '700',
                     color: 'var(--star-white)',
-                    marginBottom: '20px',
+                    marginBottom: '10px',
                     textTransform: 'uppercase',
                     letterSpacing: '0.1em',
                     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
@@ -127,7 +127,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                     alignItems: 'center',
                     gap: '20px',
                     width: '100%',
-                    height: '80vh'
+                    height: '80%'
                 }}>
                     {/* 左側: 3D地球儀地図 */}
                     <div style={{

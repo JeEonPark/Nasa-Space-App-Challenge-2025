@@ -31,50 +31,69 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
             }}>
                 CUPOLA QUEST
             </h1>
+            {/* メインコンテンツエリア (80vh) */}
             <div style={{
-                border: '1px solid rgba(184, 197, 214, 0.3)',
-                padding: '30px',
-                background: 'rgba(10, 14, 39, 0.5)',
                 display: 'flex',
                 flexDirection: 'column',
-                alignItems: 'center',
                 justifyContent: 'center',
-                borderRadius: '4px'
+                alignItems: 'center',
+                gap: '20px',
+                width: '100%',
+                height: '80%'
             }}>
-                <img
-                    src={`/iss_photos/${question.file}`}
-                    alt={question.title}
-                    style={{
-                        maxWidth: '100%',
-                        maxHeight: '600px',
-                        minHeight: '600px',
-                        objectFit: 'contain',
-                        borderRadius: '4px',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
-                    }}
-                />
-                {/* <p style={{
-                    fontSize: '1.1em',
-                    margin: '15px 0 0 0',
-                    color: 'var(--star-white)',
-                    textAlign: 'center',
-                    fontWeight: '500'
+                {/* 画像表示エリア */}
+                <div style={{
+                    border: '1px solid rgba(184, 197, 214, 0.3)',
+                    padding: '30px',
+                    background: 'rgba(10, 14, 39, 0.5)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '4px',
+                    height: '90%'
                 }}>
-                    {question.title}
-                </p> */}
-            </div>
+                    <img
+                        src={`/iss_photos/${question.file}`}
+                        alt={question.title}
+                        style={{
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            minHeight: '100%',
+                            objectFit: 'contain',
+                            borderRadius: '4px',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+                        }}
+                    />
+                    {/* <p style={{
+                        fontSize: '1.1em',
+                        margin: '15px 0 0 0',
+                        color: 'var(--star-white)',
+                        textAlign: 'center',
+                        fontWeight: '500'
+                    }}>
+                        {question.title}
+                    </p> */}
+                </div>
 
-            <button
-                onClick={onPhotoClick}
-                style={{
-                    padding: '20px 40px',
-                    fontSize: 'clamp(1em, 1.6vw, 1.2em)',
-                    cursor: 'pointer',
-                    marginTop: '20px'
-                }}
-            >
-                Guess the Location
-            </button>
+                {/* ボタンエリア */}
+                <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                }}>
+                    <button
+                        onClick={onPhotoClick}
+                        style={{
+                            padding: '20px 40px',
+                            fontSize: 'clamp(1em, 1.6vw, 1.2em)',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Guess the Location
+                    </button>
+                </div>
+            </div>
         </div>
     );
 }
