@@ -207,7 +207,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                 padding: '10px',
                                 borderRadius: '4px',
                                 border: '1px solid rgba(184, 197, 214, 0.2)',
-                                overflow: 'auto'
+                                overflow: 'visible'
                             }}>
                                 <h4 style={{
                                     margin: '0 0 10px 0',
@@ -423,8 +423,8 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                     <div style={{
                         width: isMobile ? '100%' : '35%',
                         height: isMobile ? 'auto' : '100%',
-                        maxHeight: isMobile ? '40vh' : 'none',
-                        overflow: isMobile ? 'auto' : 'hidden',
+                        maxHeight: isMobile ? 'none' : 'none',
+                        overflow: isMobile ? 'visible' : 'hidden',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px',
