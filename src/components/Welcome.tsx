@@ -5,6 +5,7 @@ interface WelcomeProps {
 }
 
 export default function Welcome({ onStartGame }: WelcomeProps) {
+    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
     return (
         <div
             onClick={onStartGame}
@@ -41,14 +42,17 @@ export default function Welcome({ onStartGame }: WelcomeProps) {
                 left: '50%',
                 transform: 'translate(-50%, -50%)',
                 zIndex: 2,
-                textAlign: 'center'
+                textAlign: 'center',
+                width: isMobile ? '80vw' : '40vw',
+                maxWidth: isMobile ? '520px' : '640px',
+                minWidth: isMobile ? '280px' : '420px'
             }}>
                 <img
                     src="/images/ui/app-icon.png"
                     alt="CupolaQuest App Icon"
                     style={{
-                        width: '80%',
-                        height: '80%',
+                        width: '100%',
+                        height: 'auto',
                         objectFit: 'contain',
                         filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
                         display: 'block',
@@ -66,7 +70,8 @@ export default function Welcome({ onStartGame }: WelcomeProps) {
                     textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
                     opacity: 0.9,
                     zIndex: 3,
-                    fontWeight: '500'
+                    fontWeight: '500',
+                    width: '100%'
                 }}>
                     Tap to start
                 </p>
