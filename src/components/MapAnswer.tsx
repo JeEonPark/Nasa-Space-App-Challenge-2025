@@ -137,155 +137,178 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
 
                     {/* 右側: 情報表示エリア */}
                     <div style={{
-                        border: '1px solid rgba(184, 197, 214, 0.3)',
-                        borderRadius: '4px',
-                        height: '70vh',
                         width: '35%',
-                        background: 'rgba(26, 31, 58, 0.6)',
-                        padding: '20px',
+                        height: '70vh',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '15px',
-                        overflow: 'auto'
+                        gap: '15px'
                     }}>
-                        {/* 操作説明 */}
+                        {/* 1つ目の枠: 操作説明と写真表示 */}
                         <div style={{
-                            background: 'rgba(42, 59, 90, 0.4)',
-                            padding: '15px',
+                            border: '1px solid rgba(184, 197, 214, 0.3)',
                             borderRadius: '4px',
-                            border: '1px solid rgba(184, 197, 214, 0.2)'
-                        }}>
-                            <h4 style={{
-                                margin: '0 0 10px 0',
-                                color: 'var(--star-white)',
-                                fontSize: '1em'
-                            }}>
-                                操作方法
-                            </h4>
-                            <p style={{
-                                margin: '0 0 8px 0',
-                                fontSize: '0.8em',
-                                color: 'var(--star-silver)',
-                                lineHeight: '1.4'
-                            }}>
-                                • 地図をクリックしてマーカーを配置
-                            </p>
-                            <p style={{
-                                margin: '0 0 8px 0',
-                                fontSize: '0.8em',
-                                color: 'var(--star-silver)',
-                                lineHeight: '1.4'
-                            }}>
-                                • マウスドラッグ: 回転
-                            </p>
-                            <p style={{
-                                margin: '0',
-                                fontSize: '0.8em',
-                                color: 'var(--star-silver)',
-                                lineHeight: '1.4'
-                            }}>
-                                • ホイール: ズーム
-                            </p>
-                        </div>
-
-                        {/* 写真表示エリア */}
-                        <div style={{
-                            border: '1px solid rgba(184, 197, 214, 0.2)',
-                            borderRadius: '4px',
-                            height: '300px',
-                            background: 'rgba(42, 59, 90, 0.3)',
+                            background: 'rgba(26, 31, 58, 0.6)',
+                            padding: '20px',
                             display: 'flex',
                             flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '10px',
-                            overflow: 'hidden'
-                        }}>
-                            <img
-                                src={`/iss_photos/${question.file}`}
-                                alt={question.title}
-                                style={{
-                                    maxWidth: '100%',
-                                    maxHeight: '250px',
-                                    objectFit: 'contain',
-                                    borderRadius: '4px',
-                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                                }}
-                            />
-                            <p style={{
-                                margin: '8px 0 0 0',
-                                color: 'var(--star-white)',
-                                fontSize: '0.8em',
-                                textAlign: 'center',
-                                opacity: 0.9,
-                                lineHeight: '1.2'
-                            }}>
-                                {question.title}
-                            </p>
-                        </div>
-
-                        {/* 座標情報とSubmitボタンの横並びコンテナ */}
-                        <div style={{
-                            display: 'flex',
                             gap: '15px',
-                            alignItems: 'flex-start'
+                            flex: '1'
                         }}>
-                            {/* 選択座標情報 */}
+                            {/* 操作説明 */}
                             <div style={{
                                 background: 'rgba(42, 59, 90, 0.4)',
                                 padding: '15px',
                                 borderRadius: '4px',
-                                border: '1px solid rgba(184, 197, 214, 0.2)',
-                                flex: '1'
+                                border: '1px solid rgba(184, 197, 214, 0.2)'
                             }}>
                                 <h4 style={{
                                     margin: '0 0 10px 0',
                                     color: 'var(--star-white)',
                                     fontSize: '1em'
                                 }}>
-                                    選択された座標
+                                    操作方法
                                 </h4>
                                 <p style={{
-                                    margin: '0 0 5px 0',
-                                    fontSize: '0.85em',
-                                    color: 'var(--star-silver)'
+                                    margin: '0 0 8px 0',
+                                    fontSize: '0.8em',
+                                    color: 'var(--star-silver)',
+                                    lineHeight: '1.4'
                                 }}>
-                                    緯度: {selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}
+                                    • 地図をクリックしてマーカーを配置
+                                </p>
+                                <p style={{
+                                    margin: '0 0 8px 0',
+                                    fontSize: '0.8em',
+                                    color: 'var(--star-silver)',
+                                    lineHeight: '1.4'
+                                }}>
+                                    • マウスドラッグ: 回転
                                 </p>
                                 <p style={{
                                     margin: '0',
-                                    fontSize: '0.85em',
-                                    color: 'var(--star-silver)'
+                                    fontSize: '0.8em',
+                                    color: 'var(--star-silver)',
+                                    lineHeight: '1.4'
                                 }}>
-                                    経度: {selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}
+                                    • ホイール: ズーム
                                 </p>
                             </div>
 
-                            {/* Submitボタン */}
-                            <button
-                                onClick={handleSubmit}
-                                disabled={selectedLat === null || selectedLon === null}
-                                style={{
-                                    padding: '15px 30px',
-                                    fontSize: '0.95em',
-                                    background: selectedLat !== null && selectedLon !== null
-                                        ? 'var(--star-blue)'
-                                        : 'rgba(184, 197, 214, 0.3)',
+                            {/* 写真表示エリア */}
+                            <div style={{
+                                border: '1px solid rgba(184, 197, 214, 0.2)',
+                                borderRadius: '4px',
+                                height: '350px',
+                                background: 'rgba(42, 59, 90, 0.3)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '10px',
+                                overflow: 'hidden'
+                            }}>
+                                <img
+                                    src={`/iss_photos/${question.file}`}
+                                    alt={question.title}
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '300px',
+                                        objectFit: 'contain',
+                                        borderRadius: '4px',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                    }}
+                                />
+                                <p style={{
+                                    margin: '8px 0 0 0',
                                     color: 'var(--star-white)',
-                                    border: '1px solid rgba(184, 197, 214, 0.3)',
+                                    fontSize: '0.8em',
+                                    textAlign: 'center',
+                                    opacity: 0.9,
+                                    lineHeight: '1.2'
+                                }}>
+                                    {question.title}
+                                </p>
+                            </div>
+
+                        </div>
+
+                        {/* 2つ目の枠: 座標情報とSubmitボタン */}
+                        <div style={{
+                            border: '1px solid rgba(184, 197, 214, 0.3)',
+                            borderRadius: '4px',
+                            background: 'rgba(26, 31, 58, 0.6)',
+                            padding: '20px',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            gap: '15px'
+                        }}>
+                            {/* 座標情報とSubmitボタンの横並びコンテナ */}
+                            <div style={{
+                                display: 'flex',
+                                gap: '15px',
+                                alignItems: 'flex-start'
+                            }}>
+                                {/* 選択座標情報 */}
+                                <div style={{
+                                    background: 'rgba(42, 59, 90, 0.4)',
+                                    padding: '15px',
                                     borderRadius: '4px',
-                                    cursor: selectedLat !== null && selectedLon !== null
-                                        ? 'pointer'
-                                        : 'not-allowed',
-                                    opacity: selectedLat !== null && selectedLon !== null ? 1 : 0.6,
-                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-                                    minWidth: '140px',
-                                    height: 'fit-content',
-                                    alignSelf: 'flex-end'
-                                }}
-                            >
-                                Submit Answer
-                            </button>
+                                    border: '1px solid rgba(184, 197, 214, 0.2)',
+                                    flex: '1'
+                                }}>
+                                    <h4 style={{
+                                        margin: '0 0 10px 0',
+                                        color: 'var(--star-white)',
+                                        fontSize: '1em'
+                                    }}>
+                                        選択された座標
+                                    </h4>
+                                    <div style={{
+                                        display: 'flex',
+                                        gap: '20px',
+                                        fontSize: '1.1em'
+                                    }}>
+                                        <p style={{
+                                            margin: '0',
+                                            color: 'var(--star-silver)'
+                                        }}>
+                                            緯度: <span style={{ color: 'var(--star-white)' }}>{selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}</span>
+                                        </p>
+                                        <p style={{
+                                            margin: '0',
+                                            color: 'var(--star-silver)'
+                                        }}>
+                                            経度: <span style={{ color: 'var(--star-white)' }}>{selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Submitボタン */}
+                                <button
+                                    onClick={handleSubmit}
+                                    disabled={selectedLat === null || selectedLon === null}
+                                    style={{
+                                        padding: '15px 30px',
+                                        fontSize: '0.95em',
+                                        background: selectedLat !== null && selectedLon !== null
+                                            ? 'var(--star-blue)'
+                                            : 'rgba(184, 197, 214, 0.3)',
+                                        color: 'var(--star-white)',
+                                        border: '1px solid rgba(184, 197, 214, 0.3)',
+                                        borderRadius: '4px',
+                                        cursor: selectedLat !== null && selectedLon !== null
+                                            ? 'pointer'
+                                            : 'not-allowed',
+                                        opacity: selectedLat !== null && selectedLon !== null ? 1 : 0.6,
+                                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                                        minWidth: '140px',
+                                        height: 'fit-content',
+                                        alignSelf: 'flex-end'
+                                    }}
+                                >
+                                    Submit Answer
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
