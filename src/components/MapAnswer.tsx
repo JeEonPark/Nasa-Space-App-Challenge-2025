@@ -276,7 +276,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                             <div style={{
                                 border: '1px solid rgba(184, 197, 214, 0.2)',
                                 borderRadius: '4px',
-                                height: '350px',
+                                height: '340px',
                                 background: 'rgba(42, 59, 90, 0.3)',
                                 display: 'flex',
                                 flexDirection: 'column',

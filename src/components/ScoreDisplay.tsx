@@ -234,7 +234,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             flex: '1'
                         }}>
                             <h3 style={{
-                                fontSize: '1.2em',
+                                fontSize: '1.4em',
                                 margin: '0 0 10px 0',
                                 color: 'var(--star-white)',
                                 textAlign: 'center'
@@ -260,7 +260,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                         color: theme.colors.starWhite,
                                         margin: '5px 0'
                                     }}>
-                                        {score.toFixed(0)}
+                                        {score.toFixed(0)}<span style={{ fontSize: '0.7em' }}>pt</span>
                                     </p>
                                     <p style={{
                                         fontSize: '0.9em',
@@ -289,7 +289,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                             color: theme.colors.starWhite,
                                             margin: '5px 0'
                                         }}>
-                                            {distanceScore.toFixed(0)}
+                                            {distanceScore.toFixed(0)}<span style={{ fontSize: '0.7em' }}>pt</span>
                                         </p>
                                         <p style={{
                                             fontSize: '0.8em',
@@ -322,7 +322,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                             color: theme.colors.starWhite,
                                             margin: '5px 0'
                                         }}>
-                                            {timeBonus.toFixed(0)}
+                                            {timeBonus.toFixed(0)}<span style={{ fontSize: '0.7em' }}>pt</span>
                                         </p>
                                         <p style={{
                                             fontSize: '0.8em',
