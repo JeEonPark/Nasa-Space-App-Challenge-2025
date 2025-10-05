@@ -126,6 +126,20 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
 
     return (
         <div style={commonStyles.container}>
+            {/* タイトル */}
+            <h1 style={{
+                fontSize: 'clamp(2em, 5vw, 4em)',
+                fontWeight: '700',
+                color: 'var(--star-white)',
+                marginBottom: '20px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                textAlign: 'center'
+            }}>
+                CUPOLA QUEST
+            </h1>
+
             <h2 style={commonStyles.title}>Results</h2>
 
             {/* 3D地球儀地図（正解とユーザーの回答をマーカーで表示） */}

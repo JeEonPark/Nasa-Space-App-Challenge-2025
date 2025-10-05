@@ -8,23 +8,33 @@ interface PhotoDisplayProps {
 export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayProps) {
     return (
         <div style={{
-            border: '1px solid rgba(184, 197, 214, 0.2)',
-            padding: '40px',
-            textAlign: 'center',
-            minHeight: '500px',
+            width: '100%',
+            height: '100vh',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '30px',
+            alignItems: 'center',
+            position: 'relative',
             background: 'rgba(26, 31, 58, 0.4)',
-            borderRadius: '8px'
+            gap: '20px',
+            padding: '20px'
         }}>
-            <h2>ISS Photograph</h2>
+            <h1 style={{
+                fontSize: 'clamp(2em, 5vw, 4em)',
+                fontWeight: '700',
+                color: 'var(--star-white)',
+                marginBottom: '10px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8)',
+                textAlign: 'center'
+            }}>
+                CUPOLA QUEST
+            </h1>
             <div style={{
                 border: '1px solid rgba(184, 197, 214, 0.3)',
-                padding: '20px',
+                padding: '30px',
                 background: 'rgba(10, 14, 39, 0.5)',
-                minHeight: '400px',
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
@@ -36,13 +46,14 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                     alt={question.title}
                     style={{
                         maxWidth: '100%',
-                        maxHeight: '350px',
+                        maxHeight: '600px',
+                        minHeight: '600px',
                         objectFit: 'contain',
                         borderRadius: '4px',
                         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
                     }}
                 />
-                <p style={{
+                {/* <p style={{
                     fontSize: '1.1em',
                     margin: '15px 0 0 0',
                     color: 'var(--star-white)',
@@ -50,19 +61,19 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                     fontWeight: '500'
                 }}>
                     {question.title}
-                </p>
+                </p> */}
             </div>
 
             <button
                 onClick={onPhotoClick}
                 style={{
-                    padding: '15px 40px',
-                    fontSize: '0.95em',
+                    padding: '20px 40px',
+                    fontSize: 'clamp(1em, 1.6vw, 1.2em)',
                     cursor: 'pointer',
                     marginTop: '20px'
                 }}
             >
-                Locate on Map
+                Guess the Location
             </button>
         </div>
     );
