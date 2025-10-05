@@ -115,7 +115,7 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                         <div style={{
                             border: '1px solid rgba(184, 197, 214, 0.3)',
                             padding: '30px',
-                            background: 'rgba(10, 14, 39, 0.5)',
+                            background: 'transparent',
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
@@ -137,7 +137,7 @@ export default function PhotoDisplay({ question, onPhotoClick }: PhotoDisplayPro
                                     objectFit: 'contain',
                                     display: 'block',
                                     borderRadius: '4px',
-                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
+                                    boxShadow: 'none'
                                 }}
                             />
                         </div>

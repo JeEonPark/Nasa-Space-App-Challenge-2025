@@ -234,7 +234,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                             minHeight: '180px',
                                             objectFit: 'contain',
                                             borderRadius: '4px',
-                                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                            boxShadow: 'none'
                                         }}
                                     />
                                 )}
@@ -356,7 +356,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                                 minHeight: '80%',
                                                 objectFit: 'contain',
                                                 borderRadius: '4px',
-                                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                                boxShadow: 'none'
                                             }}
                                         />
                                     )}
