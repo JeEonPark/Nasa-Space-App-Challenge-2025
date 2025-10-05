@@ -148,74 +148,6 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                         gap: '15px',
                         overflow: 'auto'
                     }}>
-                        {/* 写真表示エリア */}
-                        <div style={{
-                            border: '1px solid rgba(184, 197, 214, 0.2)',
-                            borderRadius: '4px',
-                            height: '200px',
-                            background: 'rgba(42, 59, 90, 0.3)',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '10px',
-                            overflow: 'hidden'
-                        }}>
-                            <img
-                                src={`/iss_photos/${question.file}`}
-                                alt={question.title}
-                                style={{
-                                    maxWidth: '100%',
-                                    maxHeight: '150px',
-                                    objectFit: 'contain',
-                                    borderRadius: '4px',
-                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                                }}
-                            />
-                            <p style={{
-                                margin: '8px 0 0 0',
-                                color: 'var(--star-white)',
-                                fontSize: '0.8em',
-                                textAlign: 'center',
-                                opacity: 0.9,
-                                lineHeight: '1.2'
-                            }}>
-                                {question.title}
-                            </p>
-                        </div>
-
-                        {/* 選択座標情報 */}
-                        {selectedLat !== null && selectedLon !== null && (
-                            <div style={{
-                                background: 'rgba(42, 59, 90, 0.4)',
-                                padding: '15px',
-                                borderRadius: '4px',
-                                border: '1px solid rgba(184, 197, 214, 0.2)'
-                            }}>
-                                <h4 style={{
-                                    margin: '0 0 10px 0',
-                                    color: 'var(--star-white)',
-                                    fontSize: '1em'
-                                }}>
-                                    選択された座標
-                                </h4>
-                                <p style={{
-                                    margin: '0 0 5px 0',
-                                    fontSize: '0.85em',
-                                    color: 'var(--star-silver)'
-                                }}>
-                                    緯度: {selectedLat.toFixed(4)}°
-                                </p>
-                                <p style={{
-                                    margin: '0',
-                                    fontSize: '0.85em',
-                                    color: 'var(--star-silver)'
-                                }}>
-                                    経度: {selectedLon.toFixed(4)}°
-                                </p>
-                            </div>
-                        )}
-
                         {/* 操作説明 */}
                         <div style={{
                             background: 'rgba(42, 59, 90, 0.4)',
@@ -253,6 +185,72 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                 lineHeight: '1.4'
                             }}>
                                 • ホイール: ズーム
+                            </p>
+                        </div>
+
+                        {/* 写真表示エリア */}
+                        <div style={{
+                            border: '1px solid rgba(184, 197, 214, 0.2)',
+                            borderRadius: '4px',
+                            height: '300px',
+                            background: 'rgba(42, 59, 90, 0.3)',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '10px',
+                            overflow: 'hidden'
+                        }}>
+                            <img
+                                src={`/iss_photos/${question.file}`}
+                                alt={question.title}
+                                style={{
+                                    maxWidth: '100%',
+                                    maxHeight: '250px',
+                                    objectFit: 'contain',
+                                    borderRadius: '4px',
+                                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                }}
+                            />
+                            <p style={{
+                                margin: '8px 0 0 0',
+                                color: 'var(--star-white)',
+                                fontSize: '0.8em',
+                                textAlign: 'center',
+                                opacity: 0.9,
+                                lineHeight: '1.2'
+                            }}>
+                                {question.title}
+                            </p>
+                        </div>
+
+                        {/* 選択座標情報 */}
+                        <div style={{
+                            background: 'rgba(42, 59, 90, 0.4)',
+                            padding: '15px',
+                            borderRadius: '4px',
+                            border: '1px solid rgba(184, 197, 214, 0.2)'
+                        }}>
+                            <h4 style={{
+                                margin: '0 0 10px 0',
+                                color: 'var(--star-white)',
+                                fontSize: '1em'
+                            }}>
+                                選択された座標
+                            </h4>
+                            <p style={{
+                                margin: '0 0 5px 0',
+                                fontSize: '0.85em',
+                                color: 'var(--star-silver)'
+                            }}>
+                                緯度: {selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}
+                            </p>
+                            <p style={{
+                                margin: '0',
+                                fontSize: '0.85em',
+                                color: 'var(--star-silver)'
+                            }}>
+                                経度: {selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}
                             </p>
                         </div>
 
