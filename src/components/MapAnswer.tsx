@@ -235,16 +235,6 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
                                     }}
                                 />
-                                <p style={{
-                                    margin: '8px 0 0 0',
-                                    color: 'var(--star-white)',
-                                    fontSize: '0.8em',
-                                    textAlign: 'center',
-                                    opacity: 0.9,
-                                    lineHeight: '1.2'
-                                }}>
-                                    {question.title}
-                                </p>
                             </div>
                         </div>
                     )}
@@ -254,7 +244,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: isMobile ? '60vh' : '80vh',
+                        height: isMobile ? '40vh' : '80vh',
                         width: isMobile ? '100%' : '55%',
                         position: 'relative'
                     }}>
@@ -509,11 +499,12 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                             flexDirection: 'column',
                             gap: '15px'
                         }}>
-                            {/* 座標情報とSubmitボタンの横並びコンテナ */}
+                            {/* 座標情報とSubmitボタンのコンテナ */}
                             <div style={{
                                 display: 'flex',
+                                flexDirection: isMobile ? 'column' : 'row',
                                 gap: '15px',
-                                alignItems: 'flex-start'
+                                alignItems: isMobile ? 'stretch' : 'flex-start'
                             }}>
                                 {/* 選択座標情報 */}
                                 <div style={{
