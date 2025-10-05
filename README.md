@@ -1,9 +1,12 @@
 # CUPOLA QUEST 🚀🌍
 
+https://github.com/user-attachments/assets/c0d8f153-69c4-4866-a2fa-6cb0132afb72
+
 > An interactive geolocation guessing game using real Earth photos seen from the ISS Cupola (observation window)
 
-- Demo: https://cupola-quest.vercel.app
+- Game: https://cupola-quest.vercel.app
 - Platform: Web
+
 
 ## 🛰️ Summary
 CUPOLA QUEST is an interactive web-based game inspired by the breathtaking Earth views from the International Space Station's Cupola.
@@ -16,6 +19,7 @@ By combining NASA's open data, interactive design, and game mechanics, CUPOLA QU
 
 “You started playing, and before you knew it, you loved space.” — This is the experience CUPOLA QUEST aims to deliver.
 
+---
 ## 🎮 How It Works
 - View real ISS photos: At the start of a round, you see an Earth photo taken from the Cupola.
 - Guess on the map: Rotate and zoom the 3D globe (MapLibre GL) to infer the shooting location.
@@ -54,6 +58,8 @@ CUPOLA QUEST is built on NASA open data and resources. This project does not imp
   - “Parmitano with camera in Cupola”
   - “Cupola with Shutters Open”
   - “ISS062-E-117852”
+
+---
 
 ## 🚀 Getting Started (Local)
 - Requirements: Node.js 18+ recommended
