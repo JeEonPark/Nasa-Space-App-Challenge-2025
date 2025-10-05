@@ -38,7 +38,7 @@ export function calculateScore(distance: number, maxScore: number = 7000): numbe
  * @param maxBonus 最大ボーナス（デフォルト: 1000）
  * @returns ボーナススコア
  */
-export function calculateTimeBonus(answerTime: number, maxBonus: number = 3000): number {
+export function calculateTimeBonus(answerTime: number): number {
     // x < 10: 3000 points
     // 10 <= x <= 180: 3000 * (1 - (log(1 + 0.001 * (x - 10)) / log(1 + 0.001 * (180 - 10)))^0.5)
     // x > 180: 0 points
@@ -65,10 +65,9 @@ export function calculateTimeBonus(answerTime: number, maxBonus: number = 3000):
 export function calculateTotalScore(
     distance: number,
     answerTime: number,
-    maxDistanceScore: number = 7000,
-    maxTimeBonus: number = 3000
+    maxDistanceScore: number = 7000
 ): number {
     const distanceScore = calculateScore(distance, maxDistanceScore);
-    const timeBonus = calculateTimeBonus(answerTime, maxTimeBonus);
+    const timeBonus = calculateTimeBonus(answerTime);
     return distanceScore + timeBonus;
 }
