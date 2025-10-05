@@ -13,11 +13,30 @@ interface ScoreDisplayProps {
     onNextQuestion: () => void;
 }
 
-// デフォルトマーカー作成関数
+// Default marker creation function
 const createDefaultMarker = (map: maplibregl.Map, lat: number, lng: number, color: string) => {
     return new maplibregl.Marker({
         color: color
     })
+        .setLngLat([lng, lat])
+        .addTo(map);
+};
+
+// Camera marker creation function
+const createCameraMarker = (map: maplibregl.Map, lat: number, lng: number) => {
+    const el = document.createElement('div');
+    el.style.width = '40px';
+    el.style.height = '40px';
+    el.style.display = 'flex';
+    el.style.alignItems = 'center';
+    el.style.justifyContent = 'center';
+    el.innerHTML = `
+        <svg width="40" height="40" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z" fill="#00CC00" stroke="#888888" stroke-width="1"/>
+            <circle cx="12" cy="12" r="4.5" fill="#FFFFFF" stroke="#888888" stroke-width="0.5"/>
+        </svg>
+    `;
+    return new maplibregl.Marker({ element: el })
         .setLngLat([lng, lat])
         .addTo(map);
 };
@@ -47,8 +66,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
         map.current.on('load', () => {
             if (!map.current) return;
 
-            // 正解マーカー（緑）
-            correctMarker.current = createDefaultMarker(map.current, question.lat, question.lon, '#00CC00');
+            // Correct answer marker (green camera)
+            correctMarker.current = createCameraMarker(map.current, question.lat, question.lon);
 
             // ユーザーの回答マーカー（赤）
             userMarker.current = createDefaultMarker(map.current, userAnswer.lat, userAnswer.lon, '#CB302E');
