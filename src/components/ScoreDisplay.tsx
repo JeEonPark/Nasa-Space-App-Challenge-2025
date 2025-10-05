@@ -68,7 +68,17 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                         '#CB302E'
                     );
 
-                    // 2つのマーカー間の線を描く
+                    // 2つのマーカー間の線を描く（中間点を1つ追加）
+                    const midLat = (question.lat + userAnswer.lat) / 2;
+
+                    // 経度の最短経路を計算（-180/+180を考慮）
+                    let lonDiff = userAnswer.lon - question.lon;
+                    if (lonDiff > 180) lonDiff -= 360;
+                    if (lonDiff < -180) lonDiff += 360;
+                    let midLon = question.lon + lonDiff / 2;
+                    if (midLon > 180) midLon -= 360;
+                    if (midLon < -180) midLon += 360;
+
                     map.current.addSource('connection-line', {
                         'type': 'geojson',
                         'data': {
@@ -78,6 +88,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                 'type': 'LineString',
                                 'coordinates': [
                                     [question.lon, question.lat],
+                                    [midLon, midLat],
                                     [userAnswer.lon, userAnswer.lat]
                                 ]
                             }
