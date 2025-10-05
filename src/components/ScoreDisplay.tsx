@@ -222,7 +222,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                         flexDirection: 'column',
                         gap: '15px'
                     }}>
-                        {/* 1つ目の枠: スコア情報 */}
+                        {/* 1つ目の枠: 画像表示とスコア情報 */}
                         <div style={{
                             border: '1px solid rgba(184, 197, 214, 0.3)',
                             borderRadius: '4px',
@@ -233,9 +233,44 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             gap: '15px',
                             flex: '1'
                         }}>
+                            {/* 写真表示エリア */}
+                            <div style={{
+                                border: '1px solid rgba(184, 197, 214, 0.2)',
+                                borderRadius: '4px',
+                                background: 'rgba(42, 59, 90, 0.3)',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                padding: '10px',
+                                overflow: 'hidden'
+                            }}>
+                                <img
+                                    src={`/iss_photos/${question.file}`}
+                                    alt={question.title}
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '200px',
+                                        objectFit: 'contain',
+                                        borderRadius: '4px',
+                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                    }}
+                                />
+                                <p style={{
+                                    margin: '8px 0 0 0',
+                                    color: 'var(--star-white)',
+                                    fontSize: '0.8em',
+                                    textAlign: 'center',
+                                    opacity: 0.9,
+                                    lineHeight: '1.2'
+                                }}>
+                                    {question.title}
+                                </p>
+                            </div>
+
                             <h3 style={{
                                 fontSize: '1.4em',
-                                margin: '0 0 10px 0',
+                                margin: '0 0 -7px 0',
                                 color: 'var(--star-white)',
                                 textAlign: 'center'
                             }}>
@@ -260,7 +295,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                                         color: theme.colors.starWhite,
                                         margin: '5px 0'
                                     }}>
-                                        {score.toFixed(0)}<span style={{ fontSize: '0.7em' }}>pt</span>
+                                        {score.toFixed(0)}<span style={{ fontSize: '0.9em' }}>pt</span>
                                     </p>
                                     <p style={{
                                         fontSize: '0.9em',
