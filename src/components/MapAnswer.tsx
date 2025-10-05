@@ -31,6 +31,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map | null>(null);
     const marker = useRef<maplibregl.Marker | null>(null);
+    const resizeObserverRef = useRef<ResizeObserver | null>(null);
 
     // 3D地球儀の初期化
     useEffect(() => {
@@ -61,12 +62,26 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                     });
                 }
             });
+            // サイズ変化に追従
+            if (mapContainer.current) {
+                resizeObserverRef.current = new ResizeObserver(() => {
+                    if (map.current) {
+                        map.current.resize();
+                    }
+                });
+                resizeObserverRef.current.observe(mapContainer.current);
+            }
         }
 
         return () => {
             if (map.current) {
                 map.current.remove();
                 map.current = null;
+            }
+            if (resizeObserverRef.current && mapContainer.current) {
+                resizeObserverRef.current.unobserve(mapContainer.current);
+                resizeObserverRef.current.disconnect();
+                resizeObserverRef.current = null;
             }
         };
     }, []);
@@ -97,6 +112,17 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
             }
         };
     }, [question.file]);
+
+    // レイアウト変化後に地図サイズを再計算
+    useEffect(() => {
+        // 次フレームでresizeすることで初期レイアウト確定後に反映
+        const id = window.requestAnimationFrame(() => {
+            if (map.current) {
+                map.current.resize();
+            }
+        });
+        return () => window.cancelAnimationFrame(id);
+    }, [isMobile, imageSrc]);
 
     // 画面サイズの変化を監視
     useEffect(() => {
@@ -161,7 +187,8 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 gap: '20px',
                 padding: '20px',
                 boxSizing: 'border-box',
-                overflow: isMobile ? 'auto' : 'visible'
+                overflow: isMobile ? 'auto' : 'visible',
+                paddingBottom: isMobile ? '120px' : '20px'
             }}>
 
                 {/* タイトル */}
@@ -278,9 +305,11 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: isMobile ? '50vh' : '100%',
+                        height: isMobile ? '45vh' : '100%',
                         width: isMobile ? '100%' : '55%',
-                        position: 'relative'
+                        position: 'relative',
+                        flexShrink: 0,
+                        minHeight: isMobile ? '45vh' : undefined
                     }}>
                         <div
                             ref={mapContainer}
@@ -540,7 +569,8 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                             padding: '20px',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: '15px'
+                            gap: '15px',
+                            marginBottom: isMobile ? '400px' : '0'
                         }}>
                             {/* 座標情報とSubmitボタンのコンテナ */}
                             <div style={{
@@ -613,6 +643,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         </div>
                     </div>
                 </div>
+                {isMobile && (<div style={{ height: '40px', flexShrink: 0 }} />)}
             </div>
         </>
     );
