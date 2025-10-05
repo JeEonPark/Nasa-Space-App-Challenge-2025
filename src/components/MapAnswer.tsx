@@ -27,6 +27,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
     const [currentTimeBonus, setCurrentTimeBonus] = useState<number>(3000);
     const [elapsedTime, setElapsedTime] = useState<number>(0);
     const [isMobile, setIsMobile] = useState<boolean>(window.innerWidth < 768);
+    const [imageSrc, setImageSrc] = useState('');
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map | null>(null);
     const marker = useRef<maplibregl.Marker | null>(null);
@@ -69,6 +70,33 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
             }
         };
     }, []);
+
+    // Load and rotate image if needed
+    useEffect(() => {
+        const img = new Image();
+        img.src = `/iss_photos/${question.file}`;
+
+        img.onload = () => {
+            const isVertical = img.height > img.width;
+
+            if (isVertical) {
+                // Rotate the image using canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = img.height;
+                canvas.height = img.width;
+                const ctx = canvas.getContext('2d');
+
+                if (ctx) {
+                    ctx.translate(canvas.width / 2, canvas.height / 2);
+                    ctx.rotate(90 * Math.PI / 180);
+                    ctx.drawImage(img, -img.width / 2, -img.height / 2);
+                    setImageSrc(canvas.toDataURL('image/jpeg', 0.95));
+                }
+            } else {
+                setImageSrc(img.src);
+            }
+        };
+    }, [question.file]);
 
     // 画面サイズの変化を監視
     useEffect(() => {
@@ -223,18 +251,20 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                 padding: '10px',
                                 overflow: 'hidden'
                             }}>
-                                <img
-                                    src={`/iss_photos/${question.file}`}
-                                    alt={question.title}
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '180px',
-                                        minHeight: '180px',
-                                        objectFit: 'contain',
-                                        borderRadius: '4px',
-                                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                                    }}
-                                />
+                                {imageSrc && (
+                                    <img
+                                        src={imageSrc}
+                                        alt={question.title}
+                                        style={{
+                                            maxWidth: '100%',
+                                            maxHeight: '180px',
+                                            minHeight: '180px',
+                                            objectFit: 'contain',
+                                            borderRadius: '4px',
+                                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                        }}
+                                    />
+                                )}
                             </div>
                         </div>
                     )}
@@ -462,18 +492,20 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                     padding: '10px',
                                     overflow: 'hidden'
                                 }}>
-                                    <img
-                                        src={`/iss_photos/${question.file}`}
-                                        alt={question.title}
-                                        style={{
-                                            maxWidth: '100%',
-                                            maxHeight: '90%',
-                                            minHeight: '80%',
-                                            objectFit: 'contain',
-                                            borderRadius: '4px',
-                                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-                                        }}
-                                    />
+                                    {imageSrc && (
+                                        <img
+                                            src={imageSrc}
+                                            alt={question.title}
+                                            style={{
+                                                maxWidth: '100%',
+                                                maxHeight: '90%',
+                                                minHeight: '80%',
+                                                objectFit: 'contain',
+                                                borderRadius: '4px',
+                                                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                                            }}
+                                        />
+                                    )}
                                     {/* <p style={{
                                     margin: '8px 0 0 0',
                                     color: 'var(--star-white)',
