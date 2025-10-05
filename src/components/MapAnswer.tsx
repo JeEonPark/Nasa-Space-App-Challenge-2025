@@ -188,7 +188,9 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                     width: '100%',
                     height: isMobile ? 'auto' : undefined,
                     flex: isMobile ? undefined : 1,
-                    padding: isMobile ? '0 10px' : '0'
+                    padding: isMobile ? '0 10px' : '0',
+                    boxSizing: 'border-box',
+                    minHeight: 0
                 }}>
                     {/* モバイル版: How to Playと画像表示を先に表示 */}
                     {isMobile && (
@@ -422,10 +424,12 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         width: isMobile ? '100%' : '35%',
                         height: isMobile ? 'auto' : '100%',
                         maxHeight: isMobile ? '40vh' : 'none',
-                        overflow: isMobile ? 'auto' : 'visible',
+                        overflow: isMobile ? 'auto' : 'hidden',
                         display: 'flex',
                         flexDirection: 'column',
-                        gap: '15px'
+                        gap: '15px',
+                        boxSizing: 'border-box',
+                        minHeight: 0
                     }}>
                         {/* 1つ目の枠: 操作説明と写真表示（Web版のみ表示） */}
                         {!isMobile && (
@@ -437,7 +441,9 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                 display: 'flex',
                                 flexDirection: 'column',
                                 gap: '15px',
-                                flex: '1'
+                                flex: '1',
+                                minHeight: 0,
+                                boxSizing: 'border-box'
                             }}>
                                 {/* 操作説明 */}
                                 <div style={{
@@ -492,17 +498,19 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                                     alignItems: 'center',
                                     justifyContent: 'center',
                                     padding: '10px',
-                                    overflow: 'hidden'
+                                    overflow: 'hidden',
+                                    boxSizing: 'border-box',
+                                    minHeight: 0
                                 }}>
                                     {imageSrc && (
                                         <img
                                             src={imageSrc}
                                             alt={question.title}
                                             style={{
+                                                width: '100%',
+                                                height: '100%',
                                                 maxWidth: '100%',
                                                 maxHeight: '100%',
-                                                width: 'auto',
-                                                height: 'auto',
                                                 objectFit: 'contain',
                                                 borderRadius: '4px',
                                                 boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
