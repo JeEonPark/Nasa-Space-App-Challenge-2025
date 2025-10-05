@@ -244,7 +244,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                     color: 'var(--star-white)',
                                     fontSize: '1em'
                                 }}>
-                                    操作方法
+                                    How to Play
                                 </h4>
                                 <p style={{
                                     margin: '0 0 8px 0',
@@ -252,7 +252,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                     color: 'var(--star-silver)',
                                     lineHeight: '1.4'
                                 }}>
-                                    • 地図をクリックしてマーカーを配置
+                                    • Click the map to place a marker
                                 </p>
                                 <p style={{
                                     margin: '0 0 8px 0',
@@ -260,7 +260,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                     color: 'var(--star-silver)',
                                     lineHeight: '1.4'
                                 }}>
-                                    • マウスドラッグ: 回転
+                                    • Mouse drag: Rotate
                                 </p>
                                 <p style={{
                                     margin: '0',
@@ -268,7 +268,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                     color: 'var(--star-silver)',
                                     lineHeight: '1.4'
                                 }}>
-                                    • ホイール: ズーム
+                                    • Mouse wheel: Zoom
                                 </p>
                             </div>
 
@@ -339,7 +339,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                         color: 'var(--star-white)',
                                         fontSize: '1em'
                                     }}>
-                                        選択された座標
+                                        Selected Coordinates
                                     </h4>
                                     <div style={{
                                         display: 'flex',
@@ -350,13 +350,13 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                             margin: '0',
                                             color: 'var(--star-silver)'
                                         }}>
-                                            緯度: <span style={{ color: 'var(--star-white)' }}>{selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}</span>
+                                            Lat: <span style={{ color: 'var(--star-white)' }}>{selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}</span>
                                         </p>
                                         <p style={{
                                             margin: '0',
                                             color: 'var(--star-silver)'
                                         }}>
-                                            経度: <span style={{ color: 'var(--star-white)' }}>{selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}</span>
+                                            Lon: <span style={{ color: 'var(--star-white)' }}>{selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}</span>
                                         </p>
                                     </div>
                                 </div>
