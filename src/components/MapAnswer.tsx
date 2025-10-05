@@ -237,7 +237,8 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                 background: 'rgba(42, 59, 90, 0.4)',
                                 padding: '15px',
                                 borderRadius: '4px',
-                                border: '1px solid rgba(184, 197, 214, 0.2)'
+                                border: '1px solid rgba(184, 197, 214, 0.2)',
+                                height: '24%',
                             }}>
                                 <h4 style={{
                                     margin: '0 0 10px 0',
@@ -276,7 +277,7 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                             <div style={{
                                 border: '1px solid rgba(184, 197, 214, 0.2)',
                                 borderRadius: '4px',
-                                height: '340px',
+                                height: '76%',
                                 background: 'rgba(42, 59, 90, 0.3)',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -290,7 +291,8 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                     alt={question.title}
                                     style={{
                                         maxWidth: '100%',
-                                        maxHeight: '300px',
+                                        maxHeight: '90%',
+                                        minHeight: '80%',
                                         objectFit: 'contain',
                                         borderRadius: '4px',
                                         boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
