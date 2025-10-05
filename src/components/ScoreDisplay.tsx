@@ -156,7 +156,7 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                 {/* メインコンテンツエリア (横並び) */}
                 <div style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: window.innerWidth < 768 ? 'column' : 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
                     gap: '20px',
@@ -168,8 +168,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: '80vh',
-                        width: '55%',
+                        height: window.innerWidth < 768 ? '50vh' : '80vh',
+                        width: window.innerWidth < 768 ? '100%' : '55%',
                         position: 'relative'
                     }}>
                         <div
@@ -235,8 +235,8 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
 
                     {/* 右側: 情報表示エリア */}
                     <div style={{
-                        width: '35%',
-                        height: '80vh',
+                        width: window.innerWidth < 768 ? '100%' : '35%',
+                        height: window.innerWidth < 768 ? 'auto' : '80vh',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px'

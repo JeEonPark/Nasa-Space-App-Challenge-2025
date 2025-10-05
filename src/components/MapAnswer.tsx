@@ -140,7 +140,7 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                 {/* メインコンテンツエリア */}
                 <div style={{
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: window.innerWidth < 768 ? 'column' : 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
                     gap: '20px',
@@ -152,8 +152,8 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                         border: '1px solid rgba(184, 197, 214, 0.3)',
                         borderRadius: '4px',
                         overflow: 'hidden',
-                        height: '80vh',
-                        width: '55%',
+                        height: window.innerWidth < 768 ? '60vh' : '80vh',
+                        width: window.innerWidth < 768 ? '100%' : '55%',
                         position: 'relative'
                     }}>
                         <div
@@ -295,8 +295,10 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
 
                     {/* 右側: 情報表示エリア */}
                     <div style={{
-                        width: '35%',
-                        height: '80vh',
+                        width: window.innerWidth < 768 ? '100%' : '35%',
+                        height: window.innerWidth < 768 ? 'auto' : '80vh',
+                        maxHeight: window.innerWidth < 768 ? '40vh' : 'none',
+                        overflow: window.innerWidth < 768 ? 'auto' : 'visible',
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '15px'
@@ -315,10 +317,11 @@ export default function MapAnswer({ question, onAnswerSubmit, gameStartTime }: M
                             {/* 操作説明 */}
                             <div style={{
                                 background: 'rgba(42, 59, 90, 0.4)',
-                                padding: '15px',
+                                padding: window.innerWidth < 768 ? '10px' : '15px',
                                 borderRadius: '4px',
                                 border: '1px solid rgba(184, 197, 214, 0.2)',
                                 height: '24%',
+                                overflow: 'auto'
                             }}>
                                 <h4 style={{
                                     margin: '0 0 10px 0',
