@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import type { Question, UserAnswer } from '../models';
+import { calculateTimeBonus } from '../utils/calculate';
 
 // 型定義の追加
 
@@ -22,9 +23,12 @@ const createDefaultMarker = (map: maplibregl.Map, lat: number, lng: number) => {
 export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) {
     const [selectedLat, setSelectedLat] = useState<number | null>(null);
     const [selectedLon, setSelectedLon] = useState<number | null>(null);
+    const [currentTimeBonus, setCurrentTimeBonus] = useState<number>(3000);
+    const [elapsedTime, setElapsedTime] = useState<number>(0);
     const mapContainer = useRef<HTMLDivElement>(null);
     const map = useRef<maplibregl.Map | null>(null);
     const marker = useRef<maplibregl.Marker | null>(null);
+    const gameStartTime = useRef<number>(Date.now());
 
     // 3D地球儀の初期化
     useEffect(() => {
@@ -63,6 +67,20 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                 map.current = null;
             }
         };
+    }, []);
+
+    // リアルタイムで時間ボーナスを更新
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const now = Date.now();
+            const elapsed = (now - gameStartTime.current) / 1000; // 秒単位
+            setElapsedTime(elapsed);
+
+            const timeBonus = calculateTimeBonus(elapsed);
+            setCurrentTimeBonus(timeBonus);
+        }, 100); // 100msごとに更新（滑らかな表示）
+
+        return () => clearInterval(interval);
     }, []);
 
     const handleSubmit = () => {
@@ -146,6 +164,68 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                                 borderRadius: '4px'
                             }}
                         />
+
+                        {/* 時間ボーナスプログレスバー */}
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '20px',
+                            left: '20px',
+                            background: 'rgba(26, 31, 58, 0.9)',
+                            border: '1px solid rgba(184, 197, 214, 0.3)',
+                            borderRadius: '8px',
+                            padding: '12px',
+                            minWidth: '200px',
+                            backdropFilter: 'blur(10px)'
+                        }}>
+                            <div style={{
+                                color: 'var(--star-white)',
+                                fontSize: '0.9em',
+                                marginBottom: '8px',
+                                fontWeight: '600'
+                            }}>
+                                Time Bonus: {currentTimeBonus.toFixed(0)}pt
+                            </div>
+
+                            {/* プログレスバー */}
+                            <div style={{
+                                width: '100%',
+                                height: '8px',
+                                background: 'rgba(184, 197, 214, 0.2)',
+                                borderRadius: '4px',
+                                overflow: 'hidden'
+                            }}>
+                                <div style={{
+                                    width: `${(currentTimeBonus / 3000) * 100}%`,
+                                    height: '100%',
+                                    background: elapsedTime < 10
+                                        ? 'linear-gradient(90deg, #00FF88, #00CC66)'
+                                        : elapsedTime < 180
+                                            ? 'linear-gradient(90deg, #FFD700, #FFA500)'
+                                            : 'linear-gradient(90deg, #FF6B6B, #FF4444)',
+                                    transition: 'width 0.1s ease-out',
+                                    borderRadius: '4px'
+                                }} />
+                            </div>
+
+                            <div style={{
+                                color: 'var(--star-silver)',
+                                fontSize: '0.7em',
+                                marginTop: '4px',
+                                textAlign: 'center',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center'
+                            }}>
+                                <span>Time Passed:</span>
+                                <span style={{
+                                    minWidth: '40px',
+                                    textAlign: 'right',
+                                    fontFamily: 'monospace'
+                                }}>
+                                    {elapsedTime.toFixed(1)}s
+                                </span>
+                            </div>
+                        </div>
                         {/* ズームコントロールボタン */}
                         <div style={{
                             position: 'absolute',
