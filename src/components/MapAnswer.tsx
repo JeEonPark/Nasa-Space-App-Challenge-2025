@@ -224,60 +224,69 @@ export default function MapAnswer({ question, onAnswerSubmit }: MapAnswerProps) 
                             </p>
                         </div>
 
-                        {/* 選択座標情報 */}
+                        {/* 座標情報とSubmitボタンの横並びコンテナ */}
                         <div style={{
-                            background: 'rgba(42, 59, 90, 0.4)',
-                            padding: '15px',
-                            borderRadius: '4px',
-                            border: '1px solid rgba(184, 197, 214, 0.2)'
+                            display: 'flex',
+                            gap: '15px',
+                            alignItems: 'flex-start'
                         }}>
-                            <h4 style={{
-                                margin: '0 0 10px 0',
-                                color: 'var(--star-white)',
-                                fontSize: '1em'
-                            }}>
-                                選択された座標
-                            </h4>
-                            <p style={{
-                                margin: '0 0 5px 0',
-                                fontSize: '0.85em',
-                                color: 'var(--star-silver)'
-                            }}>
-                                緯度: {selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}
-                            </p>
-                            <p style={{
-                                margin: '0',
-                                fontSize: '0.85em',
-                                color: 'var(--star-silver)'
-                            }}>
-                                経度: {selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}
-                            </p>
-                        </div>
-
-                        {/* Submitボタン */}
-                        <button
-                            onClick={handleSubmit}
-                            disabled={selectedLat === null || selectedLon === null}
-                            style={{
-                                padding: '15px 40px',
-                                fontSize: '0.95em',
-                                background: selectedLat !== null && selectedLon !== null
-                                    ? 'var(--star-blue)'
-                                    : 'rgba(184, 197, 214, 0.3)',
-                                color: 'var(--star-white)',
-                                border: '1px solid rgba(184, 197, 214, 0.3)',
+                            {/* 選択座標情報 */}
+                            <div style={{
+                                background: 'rgba(42, 59, 90, 0.4)',
+                                padding: '15px',
                                 borderRadius: '4px',
-                                cursor: selectedLat !== null && selectedLon !== null
-                                    ? 'pointer'
-                                    : 'not-allowed',
-                                opacity: selectedLat !== null && selectedLon !== null ? 1 : 0.6,
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-                                width: '100%',
-                                marginTop: '10px'
-                            }}
-                        >
-                            Submit Answer
-                        </button>
+                                border: '1px solid rgba(184, 197, 214, 0.2)',
+                                flex: '1'
+                            }}>
+                                <h4 style={{
+                                    margin: '0 0 10px 0',
+                                    color: 'var(--star-white)',
+                                    fontSize: '1em'
+                                }}>
+                                    選択された座標
+                                </h4>
+                                <p style={{
+                                    margin: '0 0 5px 0',
+                                    fontSize: '0.85em',
+                                    color: 'var(--star-silver)'
+                                }}>
+                                    緯度: {selectedLat !== null ? `${selectedLat.toFixed(4)}°` : '-'}
+                                </p>
+                                <p style={{
+                                    margin: '0',
+                                    fontSize: '0.85em',
+                                    color: 'var(--star-silver)'
+                                }}>
+                                    経度: {selectedLon !== null ? `${selectedLon.toFixed(4)}°` : '-'}
+                                </p>
+                            </div>
+
+                            {/* Submitボタン */}
+                            <button
+                                onClick={handleSubmit}
+                                disabled={selectedLat === null || selectedLon === null}
+                                style={{
+                                    padding: '15px 30px',
+                                    fontSize: '0.95em',
+                                    background: selectedLat !== null && selectedLon !== null
+                                        ? 'var(--star-blue)'
+                                        : 'rgba(184, 197, 214, 0.3)',
+                                    color: 'var(--star-white)',
+                                    border: '1px solid rgba(184, 197, 214, 0.3)',
+                                    borderRadius: '4px',
+                                    cursor: selectedLat !== null && selectedLon !== null
+                                        ? 'pointer'
+                                        : 'not-allowed',
+                                    opacity: selectedLat !== null && selectedLon !== null ? 1 : 0.6,
+                                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                                    minWidth: '140px',
+                                    height: 'fit-content',
+                                    alignSelf: 'flex-end'
+                                }}
+                            >
+                                Submit Answer
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
