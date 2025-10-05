@@ -260,18 +260,20 @@ export default function ScoreDisplay({ question, userAnswer, score, answerTime, 
                             }}
                         />
 
-                        {/* マーカー凡例 */}
+                        {/* マーカー凡例（Attributionに重ならない配置） */}
                         <div style={{
                             position: 'absolute',
                             bottom: '10px',
-                            left: '50%',
-                            transform: 'translateX(-50%)',
+                            left: isMobile ? '12px' : '50%',
+                            transform: isMobile ? 'none' : 'translateX(-50%)',
                             display: 'flex',
                             gap: '20px',
                             background: 'rgba(26, 31, 58, 0.8)',
                             padding: '8px 16px',
                             borderRadius: '4px',
-                            border: '1px solid rgba(184, 197, 214, 0.3)'
+                            border: '1px solid rgba(184, 197, 214, 0.3)',
+                            zIndex: 1000,
+                            pointerEvents: 'none'
                         }}>
                             <div style={{
                                 display: 'flex',
